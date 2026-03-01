@@ -330,3 +330,11 @@ Academic / Research Use
 - Arpit Anand IIT2023170
 - Snehal Gupta IIT2023169
 - Ansh Namdeo IIT2023141
+
+# Metrics
+
+| Model       | Accuracy | Precision | Recall   | F1       |
+| ----------- | -------- | --------- | -------- | -------- |
+| Static Only | 0.654    | 0.60      | 0.903    | 0.74     |
+| Basic RF    | 0.79     | 0.83      | 0.86     | 0.84     |
+| Enhanced RF | **0.82** | **0.86**  | **0.88** | **0.87** |
