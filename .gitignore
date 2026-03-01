@@ -1,0 +1,17 @@
+venv/
+# CodeQL database
+benchmark-db/
+*.sarif
+*.log
+
+# Results / Reports
+BenchmarkJava/results/
+*.xml
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store

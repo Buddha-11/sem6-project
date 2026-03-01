@@ -1,0 +1,52 @@
+[
+  {
+    "test_id": "BenchmarkTest00005",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00019",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00020",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  },
+  {
+    "test_id": "BenchmarkTest00035",
+    "rule": "java/stack-trace-exposure",
+    "llm_raw": "```json\n{\n  \"verdict\": \"true_vulnerability\",\n  \"confidence\": 1.0\n}\n```"
+  }
+]
