@@ -291,7 +291,7 @@ Needs Patch: YES
 # 🏆 Academic Contribution Angle
 
 This project demonstrates:
-
+README
 - Practical hybrid AI in software security  
 - Reduction of false positives in static analysis  
 - Agentic vulnerability triage design  
@@ -338,3 +338,8 @@ Academic / Research Use
 | Static Only | 0.654    | 0.60      | 0.903    | 0.74     |
 | Basic RF    | 0.79     | 0.83      | 0.86     | 0.84     |
 | Enhanced RF | **0.82** | **0.86**  | **0.88** | **0.87** |
+
+
+```bash
+export GROQ_API_KEY="your_actual_api_key_here"
+```
