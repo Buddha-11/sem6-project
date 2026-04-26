@@ -6,7 +6,8 @@ benchmark-db/
 
 # Results / Reports
 BenchmarkJava/results/
-*.xml
+BenchmarkJava/scorecard/*.xml
+BenchmarkJava/*.xml.bak
 
 # Python
 venv/
