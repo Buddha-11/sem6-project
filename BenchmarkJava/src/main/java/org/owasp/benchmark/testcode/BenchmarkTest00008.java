@@ -18,7 +18,6 @@
 package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
-//test commit
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

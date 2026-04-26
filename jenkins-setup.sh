@@ -53,6 +53,6 @@ echo ""
 # ── 5. Launch ─────────────────────────────────────────────
 java \
   -DJENKINS_HOME="${JENKINS_HOME}" \
-  -Djenkins.install.runSetupWizard=true \
+  -Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true \
   -jar "${JENKINS_WAR}" \
   --httpPort="${JENKINS_PORT}"
