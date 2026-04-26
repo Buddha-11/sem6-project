@@ -145,14 +145,23 @@ pipeline {
                         sh "git diff HEAD"
 
                         // Commit the patched files back to the repo
-                        sh """
-                            git config user.email "${GIT_AUTHOR_EMAIL}"
-                            git config user.name  "${GIT_AUTHOR_NAME}"
-                            git add -A
-                            git commit -m "auto-patch: vulnerability fixed by agentic pipeline [build #${env.BUILD_NUMBER}]"
-                            git push origin HEAD:main
-                        """
-                        echo "✔  Patched files committed and pushed to main."
+                        def pushCode = sh(
+                            script: """
+                                git config user.email "${GIT_AUTHOR_EMAIL}"
+                                git config user.name  "${GIT_AUTHOR_NAME}"
+                                git add -A
+                                git commit -m "auto-patch: vulnerability fixed by agentic pipeline [build #${env.BUILD_NUMBER}]"
+                                git push origin HEAD:main
+                            """,
+                            returnStatus: true
+                        )
+                        if (pushCode == 0) {
+                            echo "✔  Patched files committed and pushed to main."
+                        } else {
+                            echo "⚠  Push failed (exit ${pushCode}). The patch was applied in workspace but could not be pushed. Check git remote config."
+                            // Don't fail the build over a push issue — mark unstable
+                            currentBuild.result = "UNSTABLE"
+                        }
                     }
                 }
             }
