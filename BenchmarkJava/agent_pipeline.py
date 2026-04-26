@@ -327,6 +327,21 @@ def save_results_json(results: list, filename: str = "final_results.json"):
         json.dump(results, f, indent=4)
     print(f"[INFO] Report saved → {filename}")
 
+
+def print_patch_diff(file_path: str):
+    """Show a unified diff of what the patch changed (for build log clarity)."""
+    result = subprocess.run(
+        ["git", "diff", "--", file_path],
+        capture_output=True, text=True
+    )
+    diff = result.stdout.strip()
+    if diff:
+        print("\n--- Patch diff ---")
+        print(diff)
+        print("--- End diff ---\n")
+    else:
+        print("  [INFO] No git diff available for this file (may not be tracked yet).")
+
 # ===============================
 # STEP 10 — Agentic Loop
 # ===============================
@@ -397,6 +412,9 @@ def run_agentic_loop(changed_files: list, max_iterations: int = 3) -> tuple:
                 "patch_strategy": strategy_label,
                 "patch_status":   "applied" if success else "failed",
             })
+
+            if success:
+                print_patch_diff(vuln["file"])
             print()
 
         save_results_json(confirmed, f"patch_iteration_{iteration}.json")

@@ -6,22 +6,28 @@ pipeline {
     agent any
 
     environment {
-        // ── Add CodeQL to PATH (matches the path you exported locally) ──
-        CODEQL_HOME = "/home/arpit/Downloads/codeql-linux64/codeql"
-        PATH        = "${CODEQL_HOME}:${env.PATH}"
+        // ── Add CodeQL to PATH ──
+        CODEQL_HOME       = "/home/arpit/Downloads/codeql-linux64/codeql"
+        PATH              = "${CODEQL_HOME}:${env.PATH}"
 
-        // ── Groq key — set this in:
-        //    Manage Jenkins → Configure System → Global properties → Environment variables
+        // ── Fix Python output buffering so timestamps are accurate ──
+        PYTHONUNBUFFERED  = "1"
+
+        // ── Groq key — set in:
+        //    Manage Jenkins → Configure System → Environment variables
         //    Name: GROQ_API_KEY   Value: <your key>
-        // Jenkins will inherit it automatically; no change needed here.
 
         MAX_ITERATIONS = "3"
         PIPELINE_DIR   = "BenchmarkJava"
+
+        // ── Git identity for auto-patch commits ──
+        GIT_AUTHOR_NAME  = "Jenkins Auto-Patch"
+        GIT_AUTHOR_EMAIL = "jenkins@localhost"
     }
 
     options {
         timestamps()
-        timeout(time: 90, unit: "MINUTES")   // full loop can take a while
+        timeout(time: 90, unit: "MINUTES")
         ansiColor("xterm")
     }
 
@@ -53,8 +59,7 @@ pipeline {
                     if (!javaFiles) {
                         echo "ℹ  No Java files changed in this commit — skipping scan."
                         currentBuild.result = "SUCCESS"
-                        // Use a custom variable to signal early exit to later stages
-                        env.SKIP_SCAN = "true"
+                        env.SKIP_SCAN     = "true"
                         env.CHANGED_FILES = ""
                     } else {
                         env.SKIP_SCAN     = "false"
@@ -89,11 +94,10 @@ pipeline {
             steps {
                 dir(env.PIPELINE_DIR) {
                     script {
-                        // Run the self-healing loop; exit code 0 = clean, 1 = vulns remain
                         def exitCode = sh(
                             script: """
                                 . venv/bin/activate
-                                python3 agent_pipeline.py \\
+                                python3 -u agent_pipeline.py \\
                                     --mode patch-loop \\
                                     --max-iterations ${MAX_ITERATIONS} \\
                                     --changed-files "${env.CHANGED_FILES}"
@@ -106,10 +110,49 @@ pipeline {
                         if (exitCode == 0) {
                             echo "✅  Pipeline exited CLEAN — all vulnerabilities patched."
                         } else {
-                            // Mark unstable rather than hard-failing so artifacts are still saved
                             currentBuild.result = "UNSTABLE"
                             echo "⚠  Vulnerabilities remain after ${MAX_ITERATIONS} iterations."
                         }
+                    }
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        stage("Commit Auto-Patch to Repo") {
+        // ─────────────────────────────────────────────
+            // Only run when the loop exited clean (code was actually fixed)
+            when {
+                allOf {
+                    expression { env.SKIP_SCAN == "false" }
+                    expression { env.PIPELINE_EXIT == "0" }
+                }
+            }
+            steps {
+                script {
+                    // Show the diff of what the agent changed
+                    def diffOutput = sh(
+                        script: "git diff --stat HEAD",
+                        returnStdout: true
+                    ).trim()
+
+                    if (!diffOutput) {
+                        echo "ℹ  No file changes to commit (patch may have matched original)."
+                    } else {
+                        echo "=== Files changed by agentic patch ===\n${diffOutput}"
+
+                        // Full diff for the build log
+                        sh "git diff HEAD"
+
+                        // Commit the patched files back to the repo
+                        sh """
+                            git config user.email "${GIT_AUTHOR_EMAIL}"
+                            git config user.name  "${GIT_AUTHOR_NAME}"
+                            git add -A
+                            git commit -m "auto-patch: vulnerability fixed by agentic pipeline [build #${env.BUILD_NUMBER}]"
+                            git push origin HEAD:main
+                        """
+                        echo "✔  Patched files committed and pushed to main."
                     }
                 }
             }
@@ -122,7 +165,6 @@ pipeline {
             steps {
                 dir(env.PIPELINE_DIR) {
                     script {
-                        // Pretty-print the final JSON summary
                         def finalJson = fileExists("final_results.json")
                             ? readFile("final_results.json")
                             : "[]"
@@ -136,19 +178,18 @@ pipeline {
 
     post {
         always {
-            // Archive SARIF + every patch iteration JSON
             dir(env.PIPELINE_DIR) {
                 archiveArtifacts(
-                    artifacts:          "*.sarif, *.json",
-                    allowEmptyArchive:  true,
-                    fingerprint:        true
+                    artifacts:         "*.sarif, *.json",
+                    allowEmptyArchive: true,
+                    fingerprint:       true
                 )
             }
             echo "📦  Artifacts archived."
         }
 
         success {
-            echo "🎉  Build SUCCESS — code is vulnerability-free."
+            echo "🎉  Build SUCCESS — code is vulnerability-free and patch committed."
         }
 
         unstable {
