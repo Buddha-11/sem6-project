@@ -42,16 +42,38 @@ def get_changed_java_files():
 # STEP 2 — Rebuild CodeQL DB
 # ===============================
 
-def rebuild_codeql_database():
+def rebuild_codeql_database() -> bool:
+    """Build the CodeQL DB. Returns True on success, False on failure."""
     if os.path.exists(DB_NAME):
         subprocess.run(["rm", "-rf", DB_NAME])
     print("[INFO] Rebuilding CodeQL database...")
-    subprocess.run([
+    result = subprocess.run([
         "codeql", "database", "create", DB_NAME,
         "--language=java",
         "--source-root=.",
         "--command=mvn -DskipTests -Dspotless.check.skip=true -Dspotless.apply.skip=true clean compile"
-    ], check=True)
+    ])
+    if result.returncode != 0:
+        print("[ERROR] CodeQL database creation failed (Maven compile error or CodeQL error).")
+        return False
+    return True
+
+
+def validate_compilation() -> bool:
+    """Quick Maven compile check — returns True if code compiles cleanly."""
+    print("[INFO] Validating compilation...")
+    result = subprocess.run(
+        ["mvn", "-DskipTests",
+         "-Dspotless.check.skip=true",
+         "-Dspotless.apply.skip=true",
+         "clean", "compile"],
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        print("[WARN] Compilation FAILED after patch.")
+        return False
+    print("[INFO] Compilation OK.")
+    return True
 
 # ===============================
 # STEP 3 — Run CodeQL Analysis
@@ -245,10 +267,15 @@ def generate_patch_llm(alert: dict, full_file: bool = False) -> str:
 # ===============================
 
 def apply_snippet_patch(file_path: str, line_number: int, patch_text: str, context: int = 5) -> bool:
-    """Replace ±context lines around the vulnerability with the patched snippet."""
+    """
+    Replace ±context lines around the vulnerability with the patched snippet.
+    Returns True only if the patch was written AND the file still compiles.
+    Automatically reverts if compilation breaks.
+    """
     try:
         with open(file_path, "r") as f:
-            lines = f.readlines()
+            original_content = f.read()
+            lines = original_content.splitlines(keepends=True)
 
         start = max(0, line_number - context - 1)
         end   = min(len(lines), line_number + context)
@@ -262,8 +289,18 @@ def apply_snippet_patch(file_path: str, line_number: int, patch_text: str, conte
         with open(file_path, "w") as f:
             f.writelines(new_lines)
 
-        print(f"  ✓ Snippet patch applied → {file_path} (replaced lines {start+1}–{end})")
+        print(f"  ✓ Snippet patch written → {file_path} (replaced lines {start+1}–{end})")
+
+        # Validate the patched code still compiles
+        if not validate_compilation():
+            print(f"  ↩  Reverting bad patch on {file_path}")
+            with open(file_path, "w") as f:
+                f.write(original_content)
+            return False
+
+        print(f"  ✓ Snippet patch validated (compiles OK)")
         return True
+
     except Exception as e:
         print(f"  ✗ Snippet patch failed: {e}")
         return False
@@ -308,7 +345,10 @@ def run_agentic_loop(changed_files: list, max_iterations: int = 3) -> tuple:
         print(f"  AGENTIC LOOP — Iteration {iteration} / {max_iterations}")
         print(f"{DIVIDER}\n")
 
-        rebuild_codeql_database()
+        if not rebuild_codeql_database():
+            print("[ERROR] Cannot rebuild CodeQL DB — the codebase may not compile.")
+            print("        Skipping this iteration and moving to next.")
+            continue
         run_codeql_analysis()
 
         alerts = extract_alerts_for_files(changed_files)
@@ -343,6 +383,14 @@ def run_agentic_loop(changed_files: list, max_iterations: int = 3) -> tuple:
                 success = apply_full_file_patch(vuln["file"], patch)
             else:
                 success = apply_snippet_patch(vuln["file"], vuln["line"], patch)
+                # If snippet patch failed to compile, immediately retry with full-file
+                if not success:
+                    print("  ⚡ Snippet patch caused compile error — escalating to full-file patch")
+                    full_patch = generate_patch_llm(vuln, full_file=True)
+                    if not full_patch.startswith("LLM Error"):
+                        success = apply_full_file_patch(vuln["file"], full_patch)
+                        patch = full_patch
+                        strategy_label = "full-file(escalated)"
 
             vuln.update({
                 "patch":          patch,
@@ -358,7 +406,9 @@ def run_agentic_loop(changed_files: list, max_iterations: int = 3) -> tuple:
     print("  FINAL VERIFICATION SCAN")
     print(f"{DIVIDER}\n")
 
-    rebuild_codeql_database()
+    if not rebuild_codeql_database():
+        print("[ERROR] Final verification scan failed — code does not compile.")
+        return confirmed, False
     run_codeql_analysis()
 
     final_alerts    = extract_alerts_for_files(changed_files)
