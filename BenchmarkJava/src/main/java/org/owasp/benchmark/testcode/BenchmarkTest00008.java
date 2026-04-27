@@ -50,17 +50,17 @@ public class BenchmarkTest00008 extends HttpServlet {
         // URL Decode the header value since req.getHeader() doesn't. Unlike
         // req.getParameter().
         param = java.net.URLDecoder.decode(param, "UTF-8");
+String sql = "{call ?}";
 
-        String sql = "{call " + param + "}";
+try {
+    java.sql.Connection connection = org.owasp.benchmark.helpers.DatabaseHelper.getSqlConnection();
+    java.sql.CallableStatement statement = connection.prepareCall(sql);
+    statement.setString(1, param);
+    java.sql.ResultSet rs = statement.executeQuery();
+    org.owasp.benchmark.helpers.DatabaseHelper.printResults(rs, sql, response);
 
-        try {
-            java.sql.Connection connection = org.owasp.benchmark.helpers.DatabaseHelper.getSqlConnection();
-            java.sql.CallableStatement statement = connection.prepareCall(sql);
-            java.sql.ResultSet rs = statement.executeQuery();
-            org.owasp.benchmark.helpers.DatabaseHelper.printResults(rs, sql, response);
-
-        } catch (java.sql.SQLException e) {
-            if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {
+} catch (java.sql.SQLException e) {
+    if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {
                 response.getWriter().println("Error processin request.");
             } else
                 throw new ServletException(e);

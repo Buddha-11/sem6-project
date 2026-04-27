@@ -1,9 +1,1 @@
-[
-    {
-        "file": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest00008.java",
-        "line": 58,
-        "rule": "java/sql-injection",
-        "confidence": 0.765,
-        "needs_patch": true
-    }
-]
+[]

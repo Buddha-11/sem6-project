@@ -1,0 +1,12 @@
+[
+    {
+        "file": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest00008.java",
+        "line": 58,
+        "rule": "java/sql-injection",
+        "confidence": 0.965,
+        "needs_patch": true,
+        "patch": "String sql = \"{call ?}\";\n\ntry {\n    java.sql.Connection connection = org.owasp.benchmark.helpers.DatabaseHelper.getSqlConnection();\n    java.sql.CallableStatement statement = connection.prepareCall(sql);\n    statement.setString(1, param);\n    java.sql.ResultSet rs = statement.executeQuery();\n    org.owasp.benchmark.helpers.DatabaseHelper.printResults(rs, sql, response);\n\n} catch (java.sql.SQLException e) {\n    if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {",
+        "patch_strategy": "snippet",
+        "patch_status": "applied"
+    }
+]
