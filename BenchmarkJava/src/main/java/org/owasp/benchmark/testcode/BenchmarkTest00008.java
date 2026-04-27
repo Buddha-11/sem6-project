@@ -16,7 +16,8 @@
  * @created 2015
  */
 package org.owasp.benchmark.testcode;
-//test commit
+
+//test commits
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,14 +47,14 @@ public class BenchmarkTest00008 extends HttpServlet {
             param = request.getHeader("BenchmarkTest00008");
         }
 
-        // URL Decode the header value since req.getHeader() doesn't. Unlike req.getParameter().
+        // URL Decode the header value since req.getHeader() doesn't. Unlike
+        // req.getParameter().
         param = java.net.URLDecoder.decode(param, "UTF-8");
 
         String sql = "{call " + param + "}";
 
         try {
-            java.sql.Connection connection =
-                    org.owasp.benchmark.helpers.DatabaseHelper.getSqlConnection();
+            java.sql.Connection connection = org.owasp.benchmark.helpers.DatabaseHelper.getSqlConnection();
             java.sql.CallableStatement statement = connection.prepareCall(sql);
             java.sql.ResultSet rs = statement.executeQuery();
             org.owasp.benchmark.helpers.DatabaseHelper.printResults(rs, sql, response);
@@ -61,7 +62,8 @@ public class BenchmarkTest00008 extends HttpServlet {
         } catch (java.sql.SQLException e) {
             if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {
                 response.getWriter().println("Error processin request.");
-            } else throw new ServletException(e);
+            } else
+                throw new ServletException(e);
         }
     }
 }
