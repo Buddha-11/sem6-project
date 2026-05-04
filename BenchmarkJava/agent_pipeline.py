@@ -343,7 +343,7 @@ def print_patch_diff(file_path: str):
         print("  [INFO] No git diff available for this file (may not be tracked yet).")
 
 # ===============================
-# STEP 10 — Agentic Loop
+#Agentic Loop
 # ===============================
 
 def run_agentic_loop(changed_files: list, max_iterations: int = 3) -> tuple:

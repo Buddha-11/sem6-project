@@ -1,345 +1,132 @@
-
-# 🛡️ Agentic AI for Intelligent Vulnerability Triage & Patch Suggestion  
-### Hybrid Static Analysis + Machine Learning Security Pipeline
+# 🛡️ Agentic AI for Intelligent Vulnerability Triage & Patch Suggestion
+### Hybrid Static Analysis + Machine Learning + Self-Healing CI/CD Pipeline
 
 ---
 
 ## 📌 Project Overview
 
-This project implements an **agentic vulnerability detection and triage system** for Java codebases.
+This project implements a fully autonomous **agentic vulnerability detection, triage, and self-healing system** for Java codebases. 
 
-It integrates:
-
-- ✅ CodeQL static analysis  
-- ✅ Supervised Machine Learning filtering (Random Forest)  
-- 🔄 (Planned) LLM-based patch generation  
-
-The system monitors code changes, detects potential vulnerabilities, filters false positives using ML, and determines whether a file requires patching — along with a confidence score.
-
----
-
-# 🎯 What Problem Does This Solve?
-
-Static analysis tools like CodeQL are powerful but produce:
-
-- ❌ High false positive rates  
-- ❌ Alert fatigue  
-- ❌ Manual triage burden  
-
-This project introduces:
-
-> A hybrid AI-driven filtering layer that improves precision while maintaining recall.
-
-Instead of blindly trusting static results, we:
-
-1. Extract contextual features around alerts  
-2. Train a classifier on labeled benchmark data  
-3. Predict whether each alert is a real vulnerability  
-4. Provide a confidence score for remediation  
+It completely automates the security lifecycle by integrating:
+- ✅ **CodeQL** for deep static analysis (SAST).
+- ✅ **Machine Learning (Random Forest)** to filter out false positives and score alert confidence.
+- ✅ **LLM-Based Remediation (Llama-3.3-70b)** for generating code patches.
+- ✅ **Validation Loop** that ensures patches compile and actually fix the vulnerability.
+- ✅ **Jenkins CI/CD Automation** to trigger in real-time, execute the agentic loop, and automatically commit fixes back to the repository.
 
 ---
 
-# 🧠 Core Architecture
+## 🚀 The Agentic CI/CD Pipeline Workflow
 
-```text
-Git Commit Change
-        ↓
-Change Detection (Git Diff)
-        ↓
-CodeQL Static Scan
-        ↓
-Feature Extraction
-        ↓
-Random Forest Classifier
-        ↓
-Final Vulnerability Triage Output
+The pipeline operates as a **self-healing security agent** triggered automatically on every code push. Here is the step-by-step lifecycle of a commit:
+
+### 1. Webhook Trigger
+The developer commits and pushes code to GitHub (`git push origin main`). A GitHub Webhook instantly notifies the local Jenkins server (exposed via ngrok), triggering the pipeline.
+
+### 2. Change Detection & Setup
+Jenkins checks out the code, detects which `.java` files were modified in the commit, and initializes the Python environment with required ML and LLM dependencies.
+
+### 3. Static Analysis (CodeQL)
+The agent builds a CodeQL database of the project using Maven (`mvn clean compile`) and runs 80 specialized Java security queries to generate a comprehensive SARIF report of potential vulnerabilities.
+
+### 4. ML Triage (False-Positive Filtering)
+The pipeline extracts contextual features (e.g., presence of dangerous APIs, user input indicators) and runs them through a trained **Random Forest Classifier**. Only vulnerabilities with a high confidence score (≥ 0.6) proceed to the patching phase, effectively eliminating alert fatigue.
+
+### 5. LLM Remediation & Agentic Validation Loop
+For each confirmed vulnerability, the agent enters a self-healing loop (up to 3 iterations):
+- **Iter 1 & 2 (Snippet Mode):** The agent sends a ±5-line context window around the vulnerable line to the Groq LLM (Llama-3.3-70b). The LLM returns a precise patch. 
+- **Compilation Check:** The agent writes the patch and immediately tests it via `mvn clean compile`. If it fails, the patch is auto-reverted and the agent escalates.
+- **Iter 3 (Full-File Escalation):** If snippet patching fails, the agent sends the entire file to the LLM to resolve complex, multi-line structural issues.
+- **Re-Scan Verification:** After a successful compile, CodeQL re-scans the codebase to ensure the vulnerability is genuinely fixed.
+
+### 6. Auto-Commit and Reporting
+If the agentic loop successfully resolves the vulnerabilities, Jenkins uses a Personal Access Token (PAT) to commit and push the patched code back to the GitHub repository. Finally, it archives the run's SARIF and JSON reports into a local `reports/` directory.
+
+---
+
+## 📊 Pipeline Visualization
+
+```mermaid
+graph TD
+    A[👨‍💻 Developer Pushes Code] -->|GitHub Webhook| B(Jenkins CI Pipeline)
+    B --> C{Are there modified .java files?}
+    C -- No --> D[✅ Pipeline Success - No Action]
+    C -- Yes --> E[🔍 CodeQL Static Scan]
+    
+    E --> F[🧠 ML Triage <br/> Random Forest Classifier]
+    F --> G{Confidence > 0.6?}
+    G -- No --> H[🗑️ Discard False Positive]
+    G -- Yes --> I[🤖 LLM Remediation <br/> Llama-3.3-70b]
+    
+    I --> J[⚙️ Compile Patch <br/> mvn clean compile]
+    J -- Fails --> K{Escalate to <br/> Full-File Mode?}
+    K -- Yes --> I
+    K -- No --> L[⚠️ Revert Patch & Mark Unstable]
+    
+    J -- Compiles --> M[🔍 CodeQL Re-Scan]
+    M --> N{Vulnerability Fixed?}
+    N -- No --> O{Max Iterations Reached?}
+    O -- No --> I
+    O -- Yes --> L
+    
+    N -- Yes --> P[💾 Auto-Commit Fix to GitHub]
+    P --> Q[📁 Save Reports & Mark Success]
 ```
 
 ---
 
-# 🔬 Research & Novelty Perspective
-
-## 🔹 Hybrid Intelligence Model
-
-Unlike traditional tools that:
-
-- Use static rules only  
-- Or use LLMs without grounding  
-
-This system:
-
-- Uses static analysis for sound detection  
-- Uses ML for probabilistic filtering  
-- Prepares ground for agentic remediation  
-
-## 🔹 Alert-Level ML Filtering
-
-We trained a supervised model on:
-
-- OWASP Benchmark labeled results  
-- CodeQL findings  
-- Contextual code features  
-
-The model learns patterns like:
-
-- Presence of dangerous APIs  
-- User input indicators  
-- Snippet density  
-- Alert frequency per file  
-
-## 🔹 Incremental Security Agent
-
-The pipeline operates at:
-
-- File-level change granularity  
-- Commit-level detection  
-- Database reuse with incremental CodeQL  
-
-This is closer to a real-world CI security bot.
-
----
-
-# 📊 Current Performance (Enhanced ML Dataset)
-
-After adding contextual code features:
-
-```text
-Accuracy: 82%
-Precision (Vulnerable class): 0.86
-Recall (Vulnerable class): 0.88
-F1 Score: 0.87
-```
-
-This significantly reduces false positives compared to raw static output.
-
----
-
-# 📁 Repository Structure
+## 📁 Repository Structure
 
 ```text
 BenchmarkJava/
 │
-├── agent_pipeline.py              # Main security agent
+├── agent_pipeline.py              # Main security agent & remediation loop
 ├── build_ml_dataset.py            # Dataset generation with context features
 ├── train_random_forest.py         # ML training script
 ├── rf_model.pkl                   # Trained classifier
 ├── ml_dataset_enhanced.csv        # Final ML dataset
 ├── labeled_static_dataset.csv     # Ground truth benchmark data
+│
+├── Jenkinsfile                    # Jenkins Declarative Pipeline
+├── jenkins-setup.sh               # Local Jenkins setup automation
+├── reports/                       # Auto-generated vulnerability reports
 ├── .gitignore
 └── README.md
 ```
 
-> ⚠️ CodeQL database and logs are intentionally excluded from Git.
+---
+
+## ⚙️ Setup & Architecture Instructions
+
+### 1. Jenkins & GitHub Webhook Setup
+1. Run `./jenkins-setup.sh` to download and start a local Jenkins instance on port 8080.
+2. Use **ngrok** to expose Jenkins to the internet: `ngrok http 8080`.
+3. In GitHub, go to Repository Settings → Webhooks, and add `<ngrok-url>/github-webhook/` (Content-Type: `application/json`, Trigger on `Push`).
+4. In Jenkins, create a "Pipeline script from SCM" job pointing to your Git repository. Ensure the **"GitHub hook trigger for GITScm polling"** is checked.
+5. Add your GitHub Personal Access Token (PAT) with `Contents: Read and write` access to Jenkins credentials as `github-creds`.
+
+### 2. API Keys & Environment Variables
+Configure the following in Jenkins (Manage Jenkins → Environment Variables):
+- `GROQ_API_KEY`: Your API key for Llama-3.3-70b.
+
+### 3. Dependencies
+Ensure CodeQL is installed and available in the PATH. The Python virtual environment is handled automatically by the Jenkinsfile during the pipeline execution.
 
 ---
 
-# ⚙️ Setup Instructions
+## 📈 Performance Metrics
 
-## 1️⃣ Clone Repository
-
-```bash
-git clone https://github.com/<your-username>/sem6-project.git
-cd sem6-project/BenchmarkJava
-```
-
----
-
-## 2️⃣ Create Python Virtual Environment
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-If no requirements file exists:
-
-```bash
-pip install pandas scikit-learn joblib numpy
-```
-
----
-
-## 3️⃣ Install CodeQL
-
-Download from:
-
-https://github.com/github/codeql-cli-binaries/releases  
-
-Extract and add to PATH:
-
-```bash
-export PATH=$PATH:/path/to/codeql
-```
-
-Verify installation:
-
-```bash
-codeql --version
-```
-
----
-
-## 4️⃣ Build CodeQL Database
-
-From `BenchmarkJava/`:
-
-```bash
-rm -rf benchmark-db
-```
-
-```bash
-codeql database create benchmark-db \
-  --language=java \
-  --source-root=. \
-  --command="mvn -q -DskipTests -Dspotless.check.skip=true compile"
-```
-
-If Maven errors occur, ensure:
-
-- `spotless` plugin is skipped  
-- `origin/master` references removed if necessary  
-
----
-
-## 5️⃣ Run CodeQL Analysis
-
-```bash
-codeql database analyze benchmark-db \
-  codeql/java-queries \
-  --format=sarif-latest \
-  --output=results.sarif
-```
-
----
-
-## 6️⃣ Train ML Model (If Needed)
-
-Rebuild dataset:
-
-```bash
-python build_ml_dataset.py
-```
-
-Train model:
-
-```bash
-python train_random_forest.py
-```
-
-Ensure `rf_model.pkl` is generated.
-
----
-
-## 7️⃣ Run Agentic Pipeline
-
-```bash
-python agent_pipeline.py
-```
-
-Example Output:
-
-```text
-=== FINAL TRIAGE RESULT ===
-
-File: src/main/java/org/owasp/benchmark/testcode/BenchmarkTest00008.java
-Line: 57
-Rule: java/sql-injection
-Confidence: 0.735
-Needs Patch: YES
-```
-
----
-
-# 🤖 What the Agent Currently Does
-
-✔ Detects changed Java files  
-✔ Runs CodeQL on updated database  
-✔ Extracts alert-level features  
-✔ Applies Random Forest classifier  
-✔ Outputs vulnerability decision + confidence  
-
----
-
-# 🚧 Planned Next Phase
-
-## 🔹 Patch Generation Module
-
-- LLM-based remediation suggestions  
-- Context-aware fix generation  
-- Confidence-aware patch thresholding  
-
-## 🔹 CI Integration
-
-- GitHub Actions automation  
-- Auto triage on PR  
-- Security comment bot  
-
-## 🔹 Active Learning Loop
-
-- Use developer feedback  
-- Retrain ML model  
-- Continuous improvement  
-
----
-
-# 🏆 Academic Contribution Angle
-
-This project demonstrates:
-README
-- Practical hybrid AI in software security  
-- Reduction of false positives in static analysis  
-- Agentic vulnerability triage design  
-- Dataset engineering for security ML  
-- Real-world incremental scanning system  
-
-It can evolve into:
-
-- A publishable research prototype  
-- A security CI plugin  
-- A DevSecOps automation tool  
-
----
-
-# 📌 Current Status (Mid-Term Evaluation)
-
-| Component                          | Status        |
-|-----------------------------------|--------------|
-| CodeQL Integration                | ✅ Complete   |
-| ML Dataset Engineering            | ✅ Complete   |
-| Random Forest Filtering           | ✅ Working    |
-| Incremental Commit Detection      | ✅ Working    |
-| Confidence-Based Output           | ✅ Working    |
-| LLM Patch Generation              | 🔄 Planned    |
-
----
-
-# 📜 License
-
-Academic / Research Use  
-
----
-
-# 👨‍💻 Authors
-
-- Arpit Anand IIT2023170
-- Snehal Gupta IIT2023169
-- Ansh Namdeo IIT2023141
-
-# Metrics
+By leveraging the contextual code features and ML filtering, the system drastically reduces the false positive rate common to standard static analysis.
 
 | Model       | Accuracy | Precision | Recall   | F1       |
 | ----------- | -------- | --------- | -------- | -------- |
 | Static Only | 0.654    | 0.60      | 0.903    | 0.74     |
 | Basic RF    | 0.79     | 0.83      | 0.86     | 0.84     |
-| Enhanced RF | **0.82** | **0.86**  | **0.88** | **0.87** |
+| **Enhanced RF** | **0.82** | **0.86**  | **0.88** | **0.87** |
 
+---
 
-```bash
-export GROQ_API_KEY="your_actual_api_key_here"
-```
+## 👨‍💻 Authors
+- **Arpit Anand** - IIT2023170
+- **Snehal Gupta** - IIT2023169
+- **Ansh Namdeo** - IIT2023141
