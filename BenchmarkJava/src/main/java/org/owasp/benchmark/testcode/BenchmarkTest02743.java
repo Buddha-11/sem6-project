@@ -27,13 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * VULNERABLE: Reflected Cross-Site Scripting (CWE-79)
  *
- * User-supplied input is read from a request parameter and written directly
- * into the HTTP response without HTML encoding. An attacker can supply:
- *   ?BenchmarkTest02743=&lt;script&gt;alert(1)&lt;/script&gt;
+ * User-supplied input from a request parameter flows into the HTTP response
+ * body without HTML encoding, enabling script injection.
  *
- * FIX: wrap the output with
- *   org.owasp.esapi.ESAPI.encoder().encodeForHTML(param)
- * before writing it to the response.
+ * Attack: ?BenchmarkTest02743=&lt;script&gt;alert(1)&lt;/script&gt;
  */
 @WebServlet(value = "/xss-00/BenchmarkTest02743")
 public class BenchmarkTest02743 extends HttpServlet {
@@ -55,7 +52,7 @@ public class BenchmarkTest02743 extends HttpServlet {
 
         response.setHeader("X-XSS-Protection", "0");
 
-        // VULNERABLE: param is written directly without encodeForHTML()
+        // VULNERABLE: taint flows directly from param to the response writer
         response.getWriter().println("<p>Hello, " + param + "</p>");
     }
 }

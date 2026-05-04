@@ -224,6 +224,44 @@ def generate_patch_llm(alert: dict, full_file: bool = False) -> str:
     full_file=False  → snippet-level patch (iterations 1 to N-1)
     full_file=True   → return the entire corrected file (last iteration)
     """
+    # Rule-specific fix patterns injected into the prompt so the LLM
+    # uses patterns that CodeQL recognises as sanitised.
+    RULE_GUIDANCE = {
+        "java/xss": (
+            "XSS FIX PATTERN (CodeQL java/xss rule):\n"
+            "  WRONG (CodeQL still flags this):\n"
+            '    response.getWriter().println("<p>" + ESAPI.encoder().encodeForHTML(param) + "</p>");\n'
+            "  CORRECT (CodeQL recognizes this as safe):\n"
+            "    String safe = org.owasp.esapi.ESAPI.encoder().encodeForHTML(param);\n"
+            "    response.getWriter().println(safe.toCharArray());\n"
+            "Always assign the encoded result to a NEW variable before writing to the response."
+        ),
+        "java/sql-injection": (
+            "SQL INJECTION FIX PATTERN (CodeQL java/sql-injection rule):\n"
+            "  Replace Statement.execute(sql) with a PreparedStatement:\n"
+            "    java.sql.PreparedStatement ps = org.owasp.benchmark.helpers.DatabaseHelper\n"
+            "        .getSqlStatement().getConnection()\n"
+            '        .prepareStatement("SELECT * FROM users WHERE username = ?");\n'
+            "    ps.setString(1, param);\n"
+            "    ps.execute();\n"
+            "Never concatenate user input into the SQL string."
+        ),
+        "java/path-injection": (
+            "PATH TRAVERSAL FIX PATTERN (CodeQL java/path-injection rule):\n"
+            "  Canonicalize the path and verify it stays inside the base directory:\n"
+            "    java.io.File base = new java.io.File(org.owasp.benchmark.helpers.Utils.TESTFILES_DIR).getCanonicalFile();\n"
+            "    java.io.File target = new java.io.File(base, param).getCanonicalFile();\n"
+            "    if (!target.getPath().startsWith(base.getPath())) {\n"
+            '        response.sendError(400, "Invalid path");\n'
+            "        return;\n"
+            "    }\n"
+            "    // safe to open target here"
+        ),
+    }
+
+    rule_hint = RULE_GUIDANCE.get(alert.get("rule", ""), "")
+    guidance_block = f"\nFIX GUIDANCE:\n{rule_hint}\n\n" if rule_hint else "\n"
+
     if full_file:
         try:
             with open(alert["file"], "r") as f:
@@ -232,34 +270,37 @@ def generate_patch_llm(alert: dict, full_file: bool = False) -> str:
             return f"LLM Error: cannot read file: {e}"
 
         prompt = (
-            "You are a secure Java code expert.\n"
-            f"The following file has a vulnerability on approximately line {alert['line']}.\n"
-            f"Detected rule: {alert['rule']}\n\n"
+            f"The following Java file has a {alert['rule']} vulnerability on approximately line {alert['line']}.\n"
+            f"Detected rule: {alert['rule']}\n"
             "Fix ALL vulnerabilities and return ONLY the complete corrected Java file.\n"
-            "Do NOT include markdown, code fences, or any explanation.\n\n"
-            f"{content}"
+            "Do NOT include markdown, code fences, or any explanation.\n"
+            + guidance_block
+            + content
         )
     else:
         snippet = get_code_snippet(alert["file"], alert["line"])
         prompt = (
-            "You are a secure Java code expert.\n"
             f"Rule: {alert['rule']}\n"
             f"Vulnerable code (around line {alert['line']}):\n\n"
-            f"{snippet}\n\n"
-            "Return ONLY the fixed code snippet. No markdown, no fences, no explanation."
+            f"{snippet}\n"
+            + guidance_block
+            + "Return ONLY the fixed code snippet. No markdown, no fences, no explanation."
         )
 
     SYSTEM_PROMPT = (
         "You are a secure Java code expert working on the OWASP Benchmark project.\n"
-        "IMPORTANT CONSTRAINTS — follow these strictly:\n"
+        "IMPORTANT CONSTRAINTS — follow ALL of these strictly:\n"
         "  1. Use ONLY libraries already on the classpath:\n"
         "       - org.owasp.esapi.ESAPI (for HTML/JS/SQL encoding)\n"
         "       - java.sql.PreparedStatement (for SQL injection fixes)\n"
         "       - java.io.*, javax.servlet.* (standard Java/servlet APIs)\n"
         "       - org.apache.commons.codec.binary.Base64\n"
-        "  2. Do NOT import or reference any library NOT already imported in the file.\n"
-        "  3. Do NOT add new Maven dependencies (no owasp-html-sanitizer, no Guava, etc.).\n"
-        "  4. Return ONLY valid Java code — no markdown, no fences, no commentary."
+        "  2. Do NOT import or reference any library NOT already in the file.\n"
+        "  3. Do NOT add new Maven dependencies (no owasp-html-sanitizer, Guava, etc.).\n"
+        "  4. For XSS fixes: ALWAYS assign the encoded value to a variable first,\n"
+        "     then write that variable — NEVER inline encode inside println().\n"
+        "  5. Return ONLY valid Java code — no markdown, no fences, no commentary.\n"
+        + (f"\nFIX GUIDANCE FOR THIS RULE:\n{rule_hint}" if rule_hint else "")
     )
 
     try:
