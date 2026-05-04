@@ -249,11 +249,24 @@ def generate_patch_llm(alert: dict, full_file: bool = False) -> str:
             "Return ONLY the fixed code snippet. No markdown, no fences, no explanation."
         )
 
+    SYSTEM_PROMPT = (
+        "You are a secure Java code expert working on the OWASP Benchmark project.\n"
+        "IMPORTANT CONSTRAINTS — follow these strictly:\n"
+        "  1. Use ONLY libraries already on the classpath:\n"
+        "       - org.owasp.esapi.ESAPI (for HTML/JS/SQL encoding)\n"
+        "       - java.sql.PreparedStatement (for SQL injection fixes)\n"
+        "       - java.io.*, javax.servlet.* (standard Java/servlet APIs)\n"
+        "       - org.apache.commons.codec.binary.Base64\n"
+        "  2. Do NOT import or reference any library NOT already imported in the file.\n"
+        "  3. Do NOT add new Maven dependencies (no owasp-html-sanitizer, no Guava, etc.).\n"
+        "  4. Return ONLY valid Java code — no markdown, no fences, no commentary."
+    )
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": "You are a secure Java expert. Return only fixed code."},
+                {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user",   "content": prompt},
             ],
             temperature=0.2,
@@ -306,16 +319,40 @@ def apply_snippet_patch(file_path: str, line_number: int, patch_text: str, conte
         return False
 
 def apply_full_file_patch(file_path: str, patch_text: str) -> bool:
-    """Overwrite the entire file with the LLM-corrected version."""
+    """Overwrite the entire file with the LLM-corrected version.
+    Validates compilation and auto-reverts if the patch breaks the build.
+    """
+    try:
+        with open(file_path, "r") as f:
+            original_content = f.read()
+    except Exception as e:
+        print(f"  ✗ Full-file patch failed (cannot read original): {e}")
+        return False
+
     try:
         with open(file_path, "w") as f:
             f.write(patch_text)
             if not patch_text.endswith("\n"):
                 f.write("\n")
-        print(f"  ✓ Full-file patch applied → {file_path}")
+        print(f"  ✓ Full-file patch written → {file_path}")
+
+        # Validate the patched file still compiles
+        if not validate_compilation():
+            print(f"  ↩  Full-file patch broke compilation — reverting {file_path}")
+            with open(file_path, "w") as f:
+                f.write(original_content)
+            return False
+
+        print(f"  ✓ Full-file patch validated (compiles OK)")
         return True
     except Exception as e:
         print(f"  ✗ Full-file patch failed: {e}")
+        # Best-effort revert
+        try:
+            with open(file_path, "w") as f:
+                f.write(original_content)
+        except Exception:
+            pass
         return False
 
 # ===============================
