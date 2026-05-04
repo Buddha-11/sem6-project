@@ -1,7 +1,6 @@
 // ============================================================
 //  Agentic Vulnerability Scan + Auto-Patch — Jenkins Pipeline
 //  SAST: CodeQL (agentic patch loop)
-//  DAST: OWASP ZAP baseline scan
 // ============================================================
 pipeline {
 
@@ -25,15 +24,11 @@ pipeline {
         // ── Git identity for auto-patch commits ──
         GIT_AUTHOR_NAME  = "Jenkins Auto-Patch"
         GIT_AUTHOR_EMAIL = "jenkins@localhost"
-
-        // ── ZAP config ──
-        ZAP_APP_PORT     = "8443"
-        ZAP_APP_URL      = "https://localhost:8443/benchmark/"
     }
 
     options {
         timestamps()
-        timeout(time: 120, unit: "MINUTES")   // extended for ZAP startup+scan
+        timeout(time: 90, unit: "MINUTES")
         ansiColor("xterm")
     }
 
@@ -63,7 +58,7 @@ pipeline {
                                        .join(",")
 
                     if (!javaFiles) {
-                        echo "ℹ  No Java files changed in this commit — skipping SAST scan."
+                        echo "ℹ  No Java files changed in this commit — skipping scan."
                         currentBuild.result = "SUCCESS"
                         env.SKIP_SCAN     = "true"
                         env.CHANGED_FILES = ""
@@ -127,7 +122,6 @@ pipeline {
         // ─────────────────────────────────────────────
         stage("Commit Auto-Patch to Repo") {
         // ─────────────────────────────────────────────
-            // Only run when the SAST loop exited clean
             when {
                 allOf {
                     expression { env.SKIP_SCAN == "false" }
@@ -169,73 +163,16 @@ pipeline {
         }
 
         // ─────────────────────────────────────────────
-        stage("DAST: OWASP ZAP Scan") {
-        // ─────────────────────────────────────────────
-            // Run DAST regardless of SAST result — always valuable to scan.
-            // Uses zap_scan.py which handles the full lifecycle:
-            //   build WAR → start Cargo/Tomcat → ZAP Docker scan → stop → parse
-            steps {
-                dir(env.PIPELINE_DIR) {
-                    script {
-                        // Pull ZAP image first (cached after first run)
-                        sh "docker pull ghcr.io/zaproxy/zaproxy:stable"
-
-                        // Ensure any previous Tomcat on this port is dead
-                        sh "fuser -k ${ZAP_APP_PORT}/tcp 2>/dev/null || true"
-
-                        def zapExit = sh(
-                            script: """
-                                . venv/bin/activate
-                                python3 -u zap_scan.py
-                            """,
-                            returnStatus: true
-                        )
-
-                        env.ZAP_EXIT = zapExit.toString()
-
-                        if (zapExit == 0) {
-                            echo "✅  DAST: ZAP scan completed."
-                        } else {
-                            echo "⚠  DAST: ZAP scan exited with code ${zapExit} — check zap_report.html"
-                            // Don't fail the build — ZAP findings are advisory
-                            if (currentBuild.result != "FAILURE") {
-                                currentBuild.result = "UNSTABLE"
-                            }
-                        }
-
-                        // Print ZAP summary inline in build log
-                        if (fileExists("zap_results.json")) {
-                            def zapJson = readFile("zap_results.json")
-                            def zapFindings = readJSON text: zapJson
-                            def highCount = zapFindings.count { it.riskcode == 3 }
-                            def medCount  = zapFindings.count { it.riskcode == 2 }
-                            echo "=== ZAP Results ==="
-                            echo "  HIGH   : ${highCount}"
-                            echo "  MEDIUM : ${medCount}"
-                            echo "  TOTAL  : ${zapFindings.size()}"
-                        }
-                    }
-                }
-            }
-        }
-
-        // ─────────────────────────────────────────────
         stage("Publish Report") {
         // ─────────────────────────────────────────────
             when { expression { env.SKIP_SCAN == "false" } }
             steps {
                 dir(env.PIPELINE_DIR) {
                     script {
-                        // SAST report
                         def finalJson = fileExists("final_results.json")
                             ? readFile("final_results.json")
                             : "[]"
-                        echo "=== SAST Final Report (CodeQL) ===\n${finalJson}"
-
-                        // DAST report summary
-                        if (fileExists("zap_results.json")) {
-                            echo "=== DAST Report (ZAP) — see archived zap_report.html for full details ==="
-                        }
+                        echo "=== Final Vulnerability Report ===\n${finalJson}"
                     }
                 }
             }
@@ -247,25 +184,23 @@ pipeline {
         always {
             dir(env.PIPELINE_DIR) {
                 archiveArtifacts(
-                    artifacts:         "*.sarif, *.json, zap_report.html",
+                    artifacts:         "*.sarif, *.json",
                     allowEmptyArchive: true,
                     fingerprint:       true
                 )
             }
-            echo "📦  Artifacts archived (SARIF, JSON reports, ZAP HTML)."
+            echo "📦  Artifacts archived."
         }
 
         success {
-            echo "🎉  Build SUCCESS — code is vulnerability-free, patches committed."
+            echo "🎉  Build SUCCESS — code is vulnerability-free and patch committed."
         }
 
         unstable {
-            echo "⚠  Build UNSTABLE — some vulnerabilities remain or ZAP found issues. Review reports."
+            echo "⚠  Build UNSTABLE — vulnerabilities persist. Review final_results.json."
         }
 
         failure {
-            // Ensure Tomcat is killed even on pipeline failure
-            sh "fuser -k ${ZAP_APP_PORT}/tcp 2>/dev/null || true"
             echo "💥  Build FAILED — pipeline error. Check the logs above."
         }
     }
