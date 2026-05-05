@@ -139,11 +139,11 @@ for name, clf in models.items():
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. Plots
 # ─────────────────────────────────────────────────────────────────────────────
-BG      = "#0F172A"
-PANEL   = "#1E293B"
-GRID    = "#334155"
-TEXT    = "#E2E8F0"
-SUBTEXT = "#94A3B8"
+BG      = "#F8FAFC"
+PANEL   = "#FFFFFF"
+GRID    = "#E2E8F0"
+TEXT    = "#1E293B"
+SUBTEXT = "#64748B"
 
 def dark_fig(w, h):
     fig = plt.figure(figsize=(w, h))
@@ -173,9 +173,6 @@ for i, (name, cm) in enumerate(cms.items()):
     ax.xaxis.label.set_color(SUBTEXT)
     ax.yaxis.label.set_color(SUBTEXT)
     for sp in ax.spines.values(): sp.set_edgecolor(GRID)
-    # Recolour text in cells
-    for text in ax.texts:
-        text.set_color("white")
 fig_cm.suptitle("Confusion Matrices — Classifier Comparison",
                 color=TEXT, fontsize=14, fontweight="bold", y=1.02)
 plt.tight_layout()
@@ -193,7 +190,7 @@ for name, (fpr, tpr, roc_auc) in roc_data.items():
 style(ax_roc, "ROC Curves — All Classifiers", "False Positive Rate", "True Positive Rate")
 ax_roc.set_xlim(0,1); ax_roc.set_ylim(0,1.02)
 ax_roc.fill_between([0,1],[0,1], alpha=0.04, color="white")
-ax_roc.legend(facecolor=PANEL, edgecolor=GRID, labelcolor=TEXT, fontsize=9)
+ax_roc.legend(facecolor=PANEL, edgecolor=GRID, labelcolor=TEXT, fontsize=9, framealpha=0.8)
 plt.tight_layout()
 p = os.path.join(VIZ_DIR, "roc_curves_comparison.png")
 plt.savefig(p, dpi=150, bbox_inches="tight", facecolor=BG)
@@ -210,7 +207,7 @@ for name, (r_c, p_c, avg_prec) in pr_data.items():
                label=f"{name}  (AP = {avg_prec:.3f})")
 style(ax_pr, "Precision-Recall Curves — All Classifiers", "Recall", "Precision")
 ax_pr.set_xlim(0,1); ax_pr.set_ylim(0,1.02)
-ax_pr.legend(facecolor=PANEL, edgecolor=GRID, labelcolor=TEXT, fontsize=9)
+ax_pr.legend(facecolor=PANEL, edgecolor=GRID, labelcolor=TEXT, fontsize=9, framealpha=0.8)
 plt.tight_layout()
 p = os.path.join(VIZ_DIR, "pr_curves_comparison.png")
 plt.savefig(p, dpi=150, bbox_inches="tight", facecolor=BG)
@@ -239,7 +236,7 @@ ax_bar.set_xticks(x + width)
 ax_bar.set_xticklabels(metric_labels, color=SUBTEXT, fontsize=10)
 ax_bar.set_ylim(0, 1.12)
 style(ax_bar, "Classifier Comparison — Key Metrics", "", "Score")
-ax_bar.legend(facecolor=PANEL, edgecolor=GRID, labelcolor=TEXT, fontsize=10)
+ax_bar.legend(facecolor=PANEL, edgecolor=GRID, labelcolor=TEXT, fontsize=10, framealpha=0.8)
 plt.tight_layout()
 p = os.path.join(VIZ_DIR, "metrics_comparison.png")
 plt.savefig(p, dpi=150, bbox_inches="tight", facecolor=BG)

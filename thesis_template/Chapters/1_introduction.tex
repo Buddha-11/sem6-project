@@ -1,0 +1,49 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+Modern software systems are large, rapidly evolving, and security-critical.
+Static Application Security Testing (SAST) tools analyse source code without
+executing it and can detect a wide range of security vulnerabilities early in
+the development lifecycle \cite{hegedus2022sca}. Tools such as CodeQL, Semgrep,
+and SonarQube have become first-class citizens in DevSecOps workflows, integrated
+directly into CI/CD pipelines to catch vulnerabilities before deployment.
+
+Despite their many advantages, SAST tools suffer from a well-documented and
+persistent limitation: they produce a disproportionately large number of
+\emph{false positive alerts}. The ratio of false positive warnings can reach
+30--60\% \cite{hegedus2022sca}. This high false-alarm rate has serious
+consequences. Developers become overwhelmed and begin to distrust the tools,
+eventually ignoring most warnings or disabling the tools entirely --- a
+phenomenon known as \emph{alert fatigue}. Real vulnerabilities sink to the
+bottom of unvisited alert queues and remain unresolved, defeating the purpose
+of running static analysis.
+
+The core challenge is that the same code pattern may be a genuine vulnerability
+in one context and a benign construct in another. Classical rule-based SAST tools
+cannot capture context-dependent differences because their detection logic is
+fixed and shallow. What is needed is a post-processing layer that can learn from
+historical developer decisions to distinguish actionable warnings from false alarms.
+
+This project proposes and evaluates an \textbf{Agentic AI Pipeline for Automated
+Vulnerability Detection and Triage} with three complementary layers:
+
+\begin{enumerate}
+  \item \textbf{Detection layer}: CodeQL SAST analysis on OWASP Benchmark Java
+        test cases, producing SARIF-format results.
+  \item \textbf{Triage layer}: Machine Learning classifiers trained on features
+        extracted from SARIF alerts and source code context, classifying each
+        alert as a true or false positive and assigning a confidence score.
+  \item \textbf{Agentic layer}: An agentic AI component that consumes
+        high-confidence alerts, generates remediation suggestions, and supports
+        automated patch generation and re-evaluation.
+\end{enumerate}
+
+This approach directly addresses the gaps identified in prior work by incorporating 
+a hybrid system combining static analysis signals with ML-based filtering and Large 
+Language Model (LLM) reasoning for patching.
+
+The remainder of this report is structured as follows:
+Chapter \ref{ch:literature} reviews the literature.
+Chapter \ref{ch:methods} details the system methodology, including threshold optimization.
+Chapter \ref{ch:results} presents experimental results and model comparisons.
+Chapter \ref{ch:conclusion} concludes with future directions.

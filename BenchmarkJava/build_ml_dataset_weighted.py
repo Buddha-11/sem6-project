@@ -71,7 +71,7 @@ df["weighted_density"]     = weighted_densities
 # ── Replace the original scalar density with weighted_density ─────────────
 # Keep original density for reference but place weighted_density right after
 col_order = (
-    ["ruleId", "line"]
+    ["file_name", "ruleId", "line"]
     + alert_cols
     + ["same_type_count", "weighted_alert_count",
        "file_length", "density", "weighted_density",

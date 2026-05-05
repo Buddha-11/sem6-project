@@ -1,0 +1,108 @@
+\frontmatter% Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain}
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+\begin{spacing}{1.2}
+
+{\huge \bfseries \ttitle\par}  % ← Uses thesis title from main.tex
+
+\vspace {5mm}
+\textit{A project report submitted in partial fulfillment of the requirements\\for the award of the degree of} 
+
+\vspace{7mm}
+\textsc{\huge \MakeUppercase{\degreename}}  % ← Uses degree from main.tex
+
+\vspace {3mm}
+% Logo display - no figure environment needed on title page
+\includegraphics[width=5cm]{Figures/IIITA_Logo.jpg}
+\vspace{5mm}
+% ************************************
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{flushleft} \large
+        \textit{By:-} \\%[2mm]
+            \textsc{\studentnamesformatted} % ← Uses student names from main.tex
+    \end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.45\textwidth}
+    \begin{flushright} \large
+        \textit{Enrollment No.} \\
+            \textsc{\rollnumbersformatted} % ← Uses roll numbers from main.tex
+    \end{flushright}
+\end{minipage}\\[1cm]
+% *************************************
+
+\textit{Under the Supervision of}\\[2mm]
+\textsc{\Large \supname}\\% ← Uses supervisor name from main.tex
+\vspace{7mm}
+\textit{to the}\\[2mm]
+\textsc{\Large \deptname}\\ % ← Uses department from main.tex
+
+\vspace{8mm}
+\textsc{\Large \univname} % ← Uses university from main.tex
+
+\vspace{5mm}
+\today
+
+\end{spacing}
+\end{center}
+\end{titlepage}
+
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+\begin{spacing}{2}
+
+\addchaptertocentry{\abstractname}
+Static Application Security Testing (SAST) tools such as CodeQL are widely employed in
+modern CI/CD pipelines to detect vulnerabilities in source code. However, their practical
+value is severely limited by excessive false positive alerts---studies report that
+30--60\% of SAST alerts are false positives, causing alert fatigue and leading developers
+to ignore these tools. This report presents the design, implementation, and evaluation of
+an \emph{Agentic AI Pipeline for Automated Vulnerability Detection and Triage}, which
+combines CodeQL static analysis with machine learning (ML)-based alert classification and
+an agentic AI layer for autonomous vulnerability prioritisation and remediation.
+
+Using the OWASP Benchmark dataset (2,766 Java test cases), we evaluate three classifiers:
+Random Forest, Gradient Boosting, and Support Vector Machine. A vectorized 13-dimension
+feature representation coupled with threshold optimization yields a Gradient Boosting
+model achieving F1-score of 0.8886 and ROC-AUC of 0.9106. The agentic triage layer
+converts high-confidence alerts into developer-actionable patches via LLM reasoning,
+closing the loop from static analysis to automated remediation.
+
+\end{spacing}
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS
+%----------------------------------------------------------------------------------------
+
+\begin{acknowledgements}
+\begin{spacing}{1.5}
+\addchaptertocentry{\acknowledgementname}
+
+We would like to express our sincere gratitude to our faculty and course instructors at
+the Department of Information Technology, IIIT Allahabad, for their valuable guidance
+throughout this project. We also acknowledge the open-source communities behind CodeQL,
+OWASP Benchmark, scikit-learn, and LangChain, whose tools and datasets made this research
+possible.
+
+\end{spacing}
+\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables

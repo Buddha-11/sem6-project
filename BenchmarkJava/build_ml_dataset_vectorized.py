@@ -103,6 +103,7 @@ for row in alerts:
     has_user_input = int(any(kw in snippet for kw in input_keywords))
 
     record = {
+        "file_name": test_id,
         "ruleId": rule,
         "line": line_number,
         **alert_vector,           # 13 per-rule count columns

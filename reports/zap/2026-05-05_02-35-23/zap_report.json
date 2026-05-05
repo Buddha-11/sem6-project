@@ -1,0 +1,1797 @@
+{
+	"@programName": "ZAP",
+	"@version": "2.17.0",
+	"@generated": "Mon, 4 May 2026 21:07:28",
+	"created": "2026-05-04T21:07:28.326991997Z",
+	"insights":[
+		{
+			"level": "Low",
+			"reason": "Exceeded High",
+			"site": "https://localhost:8443",
+			"key": "insight.code.5xx",
+			"description": "Percentage of responses with status code 5xx",
+			"statistic": "95"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8443",
+			"key": "insight.code.2xx",
+			"description": "Percentage of responses with status code 2xx",
+			"statistic": "4"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8443",
+			"key": "insight.code.4xx",
+			"description": "Percentage of responses with status code 4xx",
+			"statistic": "1"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8443",
+			"key": "insight.endpoint.ctype.text/html",
+			"description": "Percentage of endpoints with content type text/html",
+			"statistic": "99"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8443",
+			"key": "insight.endpoint.method.GET",
+			"description": "Percentage of endpoints with method GET",
+			"statistic": "60"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8443",
+			"key": "insight.endpoint.method.POST",
+			"description": "Percentage of endpoints with method POST",
+			"statistic": "39"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8443",
+			"key": "insight.endpoint.total",
+			"description": "Count of total endpoints",
+			"statistic": "5504"
+		}
+	],
+	"site":[ 
+		{
+			"@name": "https://localhost:8443",
+			"@host": "localhost",
+			"@port": "8443",
+			"@ssl": "true",
+			"alerts": [ 
+				{
+					"pluginid": "10062",
+					"alertRef": "10062",
+					"alert": "PII Disclosure",
+					"name": "PII Disclosure",
+					"riskcode": "3",
+					"confidence": "3",
+					"riskdesc": "High (High)",
+					"desc": "<p>The response contains Personally Identifiable Information, such as CC number, SSN and similar sensitive data.</p>",
+					"instances":[ 
+						{
+							"id": "207",
+							"uri": "https://localhost:8443/benchmark/weakrand-01/BenchmarkTest00489",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-01\/BenchmarkTest00489 ()(BenchmarkTest00489,foo,productID,secure)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "5778556046699223746 ",
+							"otherinfo": "Credit Card Type detected: Maestro\nBank Identification Number: 577855\nBrand: MAESTRO\nCategory: \nIssuer: "
+						},
+						{
+							"id": "208",
+							"uri": "https://localhost:8443/benchmark/weakrand-03/BenchmarkTest01448",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-03\/BenchmarkTest01448 ()(BenchmarkTest01448,BenchmarkTest01448Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "4395359389929303 ",
+							"otherinfo": "Credit Card Type detected: Visa\nBank Identification Number: 439535\nBrand: VISA\nCategory: \nIssuer: "
+						},
+						{
+							"id": "209",
+							"uri": "https://localhost:8443/benchmark/weakrand-03/BenchmarkTest01575",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-03\/BenchmarkTest01575 ()(BenchmarkTest01575)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "5500551491347072 ",
+							"otherinfo": "Credit Card Type detected: Mastercard\nBank Identification Number: 550055\nBrand: MASTERCARD\nCategory: \nIssuer: WELLS FARGO BANK, N.A."
+						},
+						{
+							"id": "210",
+							"uri": "https://localhost:8443/benchmark/weakrand-04/BenchmarkTest02004",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-04\/BenchmarkTest02004 ()(BenchmarkTest02004,BenchmarkTest02004Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "5633682366134745812 ",
+							"otherinfo": "Credit Card Type detected: Maestro\nBank Identification Number: 563368\nBrand: MAESTRO\nCategory: \nIssuer: "
+						},
+						{
+							"id": "211",
+							"uri": "https://localhost:8443/benchmark/weakrand-05/BenchmarkTest02255",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-05\/BenchmarkTest02255 ()(BenchmarkTest02255,foo,productID,secure)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "4693919305879798 ",
+							"otherinfo": "Credit Card Type detected: Visa\nBank Identification Number: 469391\nBrand: VISA\nCategory: \nIssuer: "
+						}
+					],
+					"count": "5",
+					"systemic": false,
+					"solution": "<p>Check the response for the potential presence of personally identifiable information (PII), ensure nothing sensitive is leaked by the application.</p>",
+					"otherinfo": "<p>Credit Card Type detected: Maestro</p><p>Bank Identification Number: 577855</p><p>Brand: MAESTRO</p><p>Category: </p><p>Issuer: </p>",
+					"reference": "",
+					"cweid": "359",
+					"wascid": "13",
+					"sourceid": "5140"
+				},
+				{
+					"pluginid": "10202",
+					"alertRef": "10202",
+					"alert": "Absence of Anti-CSRF Tokens",
+					"name": "Absence of Anti-CSRF Tokens",
+					"riskcode": "2",
+					"confidence": "1",
+					"riskdesc": "Medium (Low)",
+					"desc": "<p>No Anti-CSRF tokens were found in a HTML submission form.</p><p>A cross-site request forgery is an attack that involves forcing a victim to send an HTTP request to a target destination without their knowledge or intent in order to perform an action as the victim. The underlying cause is application functionality using predictable URL/form actions in a repeatable way. The nature of the attack is that CSRF exploits the trust that a web site has for a user. By contrast, cross-site scripting (XSS) exploits the trust that a user has for a web site. Like XSS, CSRF attacks are not necessarily cross-site, but they can be. Cross-site request forgery is also known as CSRF, XSRF, one-click attack, session riding, confused deputy, and sea surf.</p><p></p><p>CSRF attacks are effective in a number of situations, including:</p><p>    * The victim has an active session on the target site.</p><p>    * The victim is authenticated via HTTP auth on the target site.</p><p>    * The victim is on the same local network as the target site.</p><p></p><p>CSRF has primarily been used to perform an action against a target site using the victim's privileges, but recent techniques have been discovered to disclose information by gaining access to the response. The risk of information disclosure is dramatically increased when the target site is vulnerable to XSS, because XSS can be used as a platform for CSRF, allowing the attack to operate within the bounds of the same-origin policy.</p>",
+					"instances":[ 
+						{
+							"id": "29",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00015.html?BenchmarkTest00015=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00015.html (BenchmarkTest00015)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<form action=\"/benchmark/cmdi-00/BenchmarkTest00015\" method=\"POST\" id=\"FormBenchmarkTest00015\" autocomplete=\"off\">",
+							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"answer\" \"BenchmarkTest00015\" \"login-btn\" ]."
+						},
+						{
+							"id": "31",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00012.html?BenchmarkTest00012=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00012.html (BenchmarkTest00012)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<form action=\"/benchmark/ldapi-00/BenchmarkTest00012\" method=\"POST\" id=\"FormBenchmarkTest00012\" autocomplete=\"off\">",
+							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"answer\" \"BenchmarkTest00012\" \"login-btn\" ]."
+						},
+						{
+							"id": "62",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044.html?BenchmarkTest00044=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044.html (BenchmarkTest00044)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<form action=\"/benchmark/ldapi-00/BenchmarkTest00044\" method=\"POST\" id=\"FormBenchmarkTest00044\" autocomplete=\"off\">",
+							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"BenchmarkTest00044\" \"foo\" ]."
+						},
+						{
+							"id": "28",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00016.html?BenchmarkTest00016=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00016.html (BenchmarkTest00016)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<form action=\"/benchmark/securecookie-00/BenchmarkTest00016\" method=\"POST\" id=\"FormBenchmarkTest00016\" autocomplete=\"off\">",
+							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"answer\" \"BenchmarkTest00016\" \"login-btn\" ]."
+						},
+						{
+							"id": "72",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00170.html?BenchmarkTest00170=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00170.html (BenchmarkTest00170)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<form action=\"/benchmark/securecookie-00/BenchmarkTest00170\" method=\"POST\" id=\"FormBenchmarkTest00170\" autocomplete=\"off\">",
+							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"answer\" \"BenchmarkTest00170\" \"login-btn\" ]."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Phase: Architecture and Design</p><p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p><p>For example, use anti-CSRF packages such as the OWASP CSRFGuard.</p><p></p><p>Phase: Implementation</p><p>Ensure that your application is free of cross-site scripting issues, because most CSRF defenses can be bypassed using attacker-controlled script.</p><p></p><p>Phase: Architecture and Design</p><p>Generate a unique nonce for each form, place the nonce into the form, and verify the nonce upon receipt of the form. Be sure that the nonce is not predictable (CWE-330).</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Identify especially dangerous operations. When the user performs a dangerous operation, send a separate confirmation request to ensure that the user intended to perform that operation.</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Use the ESAPI Session Management control.</p><p>This control includes a component for CSRF.</p><p></p><p>Do not use the GET method for any request that triggers a state change.</p><p></p><p>Phase: Implementation</p><p>Check the HTTP Referer header to see if the request originated from an expected page. This could break legitimate functionality, because users or proxies may have disabled sending the Referer for privacy reasons.</p>",
+					"otherinfo": "<p>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"answer\" \"BenchmarkTest00015\" \"login-btn\" ].</p>",
+					"reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html</p><p>https://cwe.mitre.org/data/definitions/352.html</p>",
+					"cweid": "352",
+					"wascid": "9",
+					"sourceid": "62"
+				},
+				{
+					"pluginid": "10055",
+					"alertRef": "10055-5",
+					"alert": "CSP: script-src unsafe-inline",
+					"name": "CSP: script-src unsafe-inline",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+					"instances":[ 
+						{
+							"id": "11",
+							"uri": "https://localhost:8443/benchmark/",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "frame-ancestors 'self'; form-action 'self'; default-src 'unsafe-inline' 'unsafe-eval' 'self'; style-src 'unsafe-inline' 'self'; style-src-elem 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "10",
+							"uri": "https://localhost:8443/benchmark/Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/Index.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "frame-ancestors 'self'; form-action 'self'; default-src 'unsafe-inline' 'unsafe-eval' 'self'; style-src 'unsafe-inline' 'self'; style-src-elem 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "25",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00012.html?BenchmarkTest00012=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00012.html (BenchmarkTest00012)",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "frame-ancestors 'self'; form-action 'self'; default-src 'unsafe-inline' 'unsafe-eval' 'self'; style-src 'unsafe-inline' 'self'; style-src-elem 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "19",
+							"uri": "https://localhost:8443/benchmark/ldapi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-Index.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "frame-ancestors 'self'; form-action 'self'; default-src 'unsafe-inline' 'unsafe-eval' 'self'; style-src 'unsafe-inline' 'self'; style-src-elem 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "16",
+							"uri": "https://localhost:8443/benchmark/securecookie-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-Index.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "frame-ancestors 'self'; form-action 'self'; default-src 'unsafe-inline' 'unsafe-eval' 'self'; style-src 'unsafe-inline' 'self'; style-src-elem 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com",
+							"otherinfo": "script-src includes unsafe-inline."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
+					"otherinfo": "<p>script-src includes unsafe-inline.</p>",
+					"reference": "<p>https://www.w3.org/TR/CSP/</p><p>https://caniuse.com/#search=content+security+policy</p><p>https://content-security-policy.com/</p><p>https://github.com/HtmlUnit/htmlunit-csp</p><p>https://web.dev/articles/csp#resource-options</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "23"
+				},
+				{
+					"pluginid": "10038",
+					"alertRef": "10038-1",
+					"alert": "Content Security Policy (CSP) Header Not Set",
+					"name": "Content Security Policy (CSP) Header Not Set",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+					"instances":[ 
+						{
+							"id": "2",
+							"uri": "https://localhost:8443/",
+							"nodeName": "https:\/\/localhost:8443\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "3",
+							"uri": "https://localhost:8443/robots.txt",
+							"nodeName": "https:\/\/localhost:8443\/robots.txt",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "2",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP</p><p>https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</p><p>https://www.w3.org/TR/CSP/</p><p>https://w3c.github.io/webappsec-csp/</p><p>https://web.dev/articles/csp</p><p>https://caniuse.com/#feat=contentsecuritypolicy</p><p>https://content-security-policy.com/</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "10"
+				},
+				{
+					"pluginid": "90003",
+					"alertRef": "90003",
+					"alert": "Sub Resource Integrity Attribute Missing",
+					"name": "Sub Resource Integrity Attribute Missing",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>The integrity attribute is missing on a script or link tag served by an external server. The integrity tag prevents an attacker who have gained access to this server from injecting a malicious content.</p>",
+					"instances":[ 
+						{
+							"id": "21",
+							"uri": "https://localhost:8443/benchmark/",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css?family=Raleway:400,300,600\" rel=\"stylesheet\" type=\"text/css\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "30",
+							"uri": "https://localhost:8443/benchmark/Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css?family=Raleway:400,300,600\" rel=\"stylesheet\" type=\"text/css\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "38",
+							"uri": "https://localhost:8443/benchmark/ldapi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css?family=Raleway:400,300,600\" rel=\"stylesheet\" type=\"text/css\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "39",
+							"uri": "https://localhost:8443/benchmark/securecookie-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css?family=Raleway:400,300,600\" rel=\"stylesheet\" type=\"text/css\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "37",
+							"uri": "https://localhost:8443/benchmark/xpathi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/xpathi-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css?family=Raleway:400,300,600\" rel=\"stylesheet\" type=\"text/css\">",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Provide a valid integrity attribute to the tag.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity</p>",
+					"cweid": "345",
+					"wascid": "15",
+					"sourceid": "23"
+				},
+				{
+					"pluginid": "90022",
+					"alertRef": "90022",
+					"alert": "Application Error Disclosure",
+					"name": "Application Error Disclosure",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>This page contains an error/warning message that may disclose sensitive information like the location of the file that produced the unhandled exception. This information can be used to launch further attacks against the web application. The alert could be a false positive if the error message is found inside a documentation page.</p>",
+					"instances":[ 
+						{
+							"id": "5",
+							"uri": "https://localhost:8443/benchmark/",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "9",
+							"uri": "https://localhost:8443/benchmark/Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "76",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00007.html?BenchmarkTest00007=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00007.html (BenchmarkTest00007)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "24",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00015.html?BenchmarkTest00015=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00015.html (BenchmarkTest00015)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "53",
+							"uri": "https://localhost:8443/benchmark/css/normalize.css",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/css\/normalize.css",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "22",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00012.html?BenchmarkTest00012=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00012.html (BenchmarkTest00012)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "61",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044.html?BenchmarkTest00044=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044.html (BenchmarkTest00044)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "14",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00016.html?BenchmarkTest00016=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00016.html (BenchmarkTest00016)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "90",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00169.html?BenchmarkTest00169=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00169.html (BenchmarkTest00169)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "71",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00170.html?BenchmarkTest00170=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00170.html (BenchmarkTest00170)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						},
+						{
+							"id": "12",
+							"uri": "https://localhost:8443/benchmark/xpathi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/xpathi-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "HTTP/1.1 500",
+							"otherinfo": ""
+						}
+					],
+					"count": "11",
+					"systemic": false,
+					"solution": "<p>Review the source code of this page. Implement custom error pages. Consider implementing a mechanism to provide a unique error reference/identifier to the client (browser) while logging the details on the server side and not exposing them to the user.</p>",
+					"otherinfo": "",
+					"reference": "",
+					"cweid": "550",
+					"wascid": "13",
+					"sourceid": "23"
+				},
+				{
+					"pluginid": "10011",
+					"alertRef": "10011",
+					"alert": "Cookie Without Secure Flag",
+					"name": "Cookie Without Secure Flag",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>A cookie has been set without the secure flag, which means that the cookie can be accessed via unencrypted connections.</p>",
+					"instances":[ 
+						{
+							"id": "138",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00087",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00087",
+							"method": "POST",
+							"param": "SomeCookie",
+							"attack": "",
+							"evidence": "Set-Cookie: SomeCookie",
+							"otherinfo": ""
+						},
+						{
+							"id": "172",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00348",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00348 ()(BenchmarkTest00348,email,password)",
+							"method": "POST",
+							"param": "SomeCookie",
+							"attack": "",
+							"evidence": "Set-Cookie: SomeCookie",
+							"otherinfo": ""
+						},
+						{
+							"id": "157",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00403",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00403 ()(BenchmarkTest00403,email,password)",
+							"method": "POST",
+							"param": "SomeCookie",
+							"attack": "",
+							"evidence": "Set-Cookie: SomeCookie",
+							"otherinfo": ""
+						},
+						{
+							"id": "179",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00491",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00491 ()(BenchmarkTest00491)",
+							"method": "POST",
+							"param": "SomeCookie",
+							"attack": "",
+							"evidence": "Set-Cookie: SomeCookie",
+							"otherinfo": ""
+						},
+						{
+							"id": "181",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00736",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00736 ()(BenchmarkTest00736,foo,productID,secure)",
+							"method": "POST",
+							"param": "SomeCookie",
+							"attack": "",
+							"evidence": "Set-Cookie: SomeCookie",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Whenever a cookie contains sensitive information or is a session token, then it should always be passed using an encrypted channel. Ensure that the secure flag is set for cookies containing such sensitive information.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html</p>",
+					"cweid": "614",
+					"wascid": "13",
+					"sourceid": "405"
+				},
+				{
+					"pluginid": "90004",
+					"alertRef": "90004-2",
+					"alert": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+					"name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>Cross-Origin-Embedder-Policy header is a response header that prevents a document from loading any cross-origin resources that don't explicitly grant the document permission (using CORP or CORS).</p>",
+					"instances":[ 
+						{
+							"id": "67",
+							"uri": "https://localhost:8443/benchmark/cmdi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Embedder-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "59",
+							"uri": "https://localhost:8443/benchmark/crypto-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Embedder-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "87",
+							"uri": "https://localhost:8443/benchmark/hash-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Embedder-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "89",
+							"uri": "https://localhost:8443/benchmark/pathtraver-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/pathtraver-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Embedder-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "51",
+							"uri": "https://localhost:8443/benchmark/trustbound-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Embedder-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that the application/web server sets the Cross-Origin-Embedder-Policy header appropriately, and that it sets the Cross-Origin-Embedder-Policy header to 'require-corp' for documents.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Embedder-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-embedder-policy).</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy</p>",
+					"cweid": "693",
+					"wascid": "14",
+					"sourceid": "26"
+				},
+				{
+					"pluginid": "90004",
+					"alertRef": "90004-3",
+					"alert": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+					"name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>Cross-Origin-Opener-Policy header is a response header that allows a site to control if others included documents share the same browsing context. Sharing the same browsing context with untrusted documents might lead to data leak.</p>",
+					"instances":[ 
+						{
+							"id": "68",
+							"uri": "https://localhost:8443/benchmark/cmdi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Opener-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "60",
+							"uri": "https://localhost:8443/benchmark/crypto-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Opener-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "88",
+							"uri": "https://localhost:8443/benchmark/hash-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Opener-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "91",
+							"uri": "https://localhost:8443/benchmark/pathtraver-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/pathtraver-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Opener-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "52",
+							"uri": "https://localhost:8443/benchmark/trustbound-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Opener-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that the application/web server sets the Cross-Origin-Opener-Policy header appropriately, and that it sets the Cross-Origin-Opener-Policy header to 'same-origin' for documents.</p><p>'same-origin-allow-popups' is considered as less secured and should be avoided.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Opener-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-opener-policy).</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy</p>",
+					"cweid": "693",
+					"wascid": "14",
+					"sourceid": "26"
+				},
+				{
+					"pluginid": "90004",
+					"alertRef": "90004-1",
+					"alert": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+					"name": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>Cross-Origin-Resource-Policy header is an opt-in header designed to counter side-channels attacks like Spectre. Resource should be specifically set as shareable amongst different origins.</p>",
+					"instances":[ 
+						{
+							"id": "66",
+							"uri": "https://localhost:8443/benchmark/cmdi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "58",
+							"uri": "https://localhost:8443/benchmark/crypto-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "86",
+							"uri": "https://localhost:8443/benchmark/hash-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "85",
+							"uri": "https://localhost:8443/benchmark/pathtraver-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/pathtraver-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "50",
+							"uri": "https://localhost:8443/benchmark/trustbound-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-Index.html",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that the application/web server sets the Cross-Origin-Resource-Policy header appropriately, and that it sets the Cross-Origin-Resource-Policy header to 'same-origin' for all web pages.</p><p>'same-site' is considered as less secured and should be avoided.</p><p>If resources must be shared, set the header to 'cross-origin'.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Resource-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-resource-policy).</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy</p>",
+					"cweid": "693",
+					"wascid": "14",
+					"sourceid": "26"
+				},
+				{
+					"pluginid": "10009",
+					"alertRef": "10009",
+					"alert": "In Page Banner Information Leak",
+					"name": "In Page Banner Information Leak",
+					"riskcode": "1",
+					"confidence": "3",
+					"riskdesc": "Low (High)",
+					"desc": "<p>The server returned a version banner string in the response content. Such information leaks may allow attackers to further target specific issues impacting the product and version in use.</p>",
+					"instances":[ 
+						{
+							"id": "8",
+							"uri": "https://localhost:8443/",
+							"nodeName": "https:\/\/localhost:8443\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "Tomcat/9.0.11",
+							"otherinfo": "There is a chance that the highlight in the finding is on a value in the headers, versus the actual matched string in the response body."
+						},
+						{
+							"id": "7",
+							"uri": "https://localhost:8443/robots.txt",
+							"nodeName": "https:\/\/localhost:8443\/robots.txt",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "Tomcat/9.0.11",
+							"otherinfo": "There is a chance that the highlight in the finding is on a value in the headers, versus the actual matched string in the response body."
+						},
+						{
+							"id": "6",
+							"uri": "https://localhost:8443/sitemap.xml",
+							"nodeName": "https:\/\/localhost:8443\/sitemap.xml",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "Tomcat/9.0.11",
+							"otherinfo": "There is a chance that the highlight in the finding is on a value in the headers, versus the actual matched string in the response body."
+						},
+						{
+							"id": "116",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044 ()(BenchmarkTest00044,foo)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Tomcat/9.0.11",
+							"otherinfo": "There is a chance that the highlight in the finding is on a value in the headers, versus the actual matched string in the response body."
+						},
+						{
+							"id": "119",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00169",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00169 ()(BenchmarkTest00169,BenchmarkTest00169Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Tomcat/9.0.11",
+							"otherinfo": "There is a chance that the highlight in the finding is on a value in the headers, versus the actual matched string in the response body."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Configure the server to prevent such information leaks. For example:</p><p>Under Tomcat this is done via the \"server\" directive and implementation of custom error pages.</p><p>Under Apache this is done via the \"ServerSignature\" and \"ServerTokens\" directives.</p>",
+					"otherinfo": "<p>There is a chance that the highlight in the finding is on a value in the headers, versus the actual matched string in the response body.</p>",
+					"reference": "<p>https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/08-Testing_for_Error_Handling/</p>",
+					"cweid": "497",
+					"wascid": "13",
+					"sourceid": "10"
+				},
+				{
+					"pluginid": "10023",
+					"alertRef": "10023",
+					"alert": "Information Disclosure - Debug Error Messages",
+					"name": "Information Disclosure - Debug Error Messages",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>The response appeared to contain common error messages returned by platforms such as ASP.NET, and Web-servers such as IIS and Apache. You can configure the list of common debug messages.</p>",
+					"instances":[ 
+						{
+							"id": "146",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00021?BenchmarkTest00021=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00021 (BenchmarkTest00021,password,username)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "161",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00367?BenchmarkTest00367=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00367 (BenchmarkTest00367,password,username)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "141",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00017",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00017 ()(BenchmarkTest00017,BenchmarkTest00017Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "124",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00012",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00012 ()(BenchmarkTest00012,BenchmarkTest00012Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "117",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044 ()(BenchmarkTest00044,foo)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "132",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00138",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00138 ()(BenchmarkTest00138,BenchmarkTest00138Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "149",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00139",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00139 ()(BenchmarkTest00139,BenchmarkTest00139Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "150",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00530",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00530 ()(BenchmarkTest00530,BenchmarkTest00530Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "134",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00016",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00016 ()(BenchmarkTest00016,BenchmarkTest00016Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "120",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00169",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00169 ()(BenchmarkTest00169,BenchmarkTest00169Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "128",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00170",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00170 ()(BenchmarkTest00170,BenchmarkTest00170Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						},
+						{
+							"id": "154",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00241",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00241 ()(BenchmarkTest00241,BenchmarkTest00241Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "Internal Server Error",
+							"otherinfo": ""
+						}
+					],
+					"count": "12",
+					"systemic": false,
+					"solution": "<p>Disable debugging messages before pushing to production.</p>",
+					"otherinfo": "",
+					"reference": "",
+					"cweid": "1295",
+					"wascid": "13",
+					"sourceid": "404"
+				},
+				{
+					"pluginid": "10063",
+					"alertRef": "10063-1",
+					"alert": "Permissions Policy Header Not Set",
+					"name": "Permissions Policy Header Not Set",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>Permissions Policy Header is an added layer of security that helps to restrict from unauthorized access or usage of browser/client features by web resources. This policy ensures the user privacy by limiting or specifying the features of the browsers can be used by the web resources. Permissions Policy provides a set of standard HTTP headers that allow website owners to limit which features of browsers can be used by the page such as camera, microphone, location, full screen etc.</p>",
+					"instances":[ 
+						{
+							"id": "64",
+							"uri": "https://localhost:8443/benchmark/cmdi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "57",
+							"uri": "https://localhost:8443/benchmark/crypto-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "70",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044.html?BenchmarkTest00044=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044.html (BenchmarkTest00044)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "75",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00170.html?BenchmarkTest00170=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00170.html (BenchmarkTest00170)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "49",
+							"uri": "https://localhost:8443/benchmark/trustbound-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Permissions-Policy header.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy</p><p>https://developer.chrome.com/blog/feature-policy/</p><p>https://scotthelme.co.uk/a-new-security-header-feature-policy/</p><p>https://w3c.github.io/webappsec-feature-policy/</p><p>https://www.smashingmagazine.com/2018/12/feature-policy/</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "26"
+				},
+				{
+					"pluginid": "10035",
+					"alertRef": "10035-1",
+					"alert": "Strict-Transport-Security Header Not Set",
+					"name": "Strict-Transport-Security Header Not Set",
+					"riskcode": "1",
+					"confidence": "3",
+					"riskdesc": "Low (High)",
+					"desc": "<p>HTTP Strict Transport Security (HSTS) is a web security policy mechanism whereby a web server declares that complying user agents (such as a web browser) are to interact with it using only secure HTTPS connections (i.e. HTTP layered over TLS/SSL). HSTS is an IETF standards track protocol and is specified in RFC 6797.</p>",
+					"instances":[ 
+						{
+							"id": "18",
+							"uri": "https://localhost:8443/",
+							"nodeName": "https:\/\/localhost:8443\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "17",
+							"uri": "https://localhost:8443/robots.txt",
+							"nodeName": "https:\/\/localhost:8443\/robots.txt",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "20",
+							"uri": "https://localhost:8443/sitemap.xml",
+							"nodeName": "https:\/\/localhost:8443\/sitemap.xml",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "3",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to enforce Strict-Transport-Security.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html</p><p>https://owasp.org/www-community/Security_Headers</p><p>https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</p><p>https://caniuse.com/stricttransportsecurity</p><p>https://datatracker.ietf.org/doc/html/rfc6797</p>",
+					"cweid": "319",
+					"wascid": "15",
+					"sourceid": "10"
+				},
+				{
+					"pluginid": "10096",
+					"alertRef": "10096",
+					"alert": "Timestamp Disclosure - Unix",
+					"name": "Timestamp Disclosure - Unix",
+					"riskcode": "1",
+					"confidence": "1",
+					"riskdesc": "Low (Low)",
+					"desc": "<p>A timestamp was disclosed by the application/web server. - Unix</p>",
+					"instances":[ 
+						{
+							"id": "189",
+							"uri": "https://localhost:8443/benchmark/weakrand-00/BenchmarkTest00042",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-00\/BenchmarkTest00042 ()(BenchmarkTest00042,email,password)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "1554576003",
+							"otherinfo": "1554576003, which evaluates to: 2019-04-06 18:40:03."
+						},
+						{
+							"id": "188",
+							"uri": "https://localhost:8443/benchmark/weakrand-00/BenchmarkTest00042",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-00\/BenchmarkTest00042 ()(BenchmarkTest00042,email,password)",
+							"method": "POST",
+							"param": "Set-Cookie",
+							"attack": "",
+							"evidence": "1554576003",
+							"otherinfo": "1554576003, which evaluates to: 2019-04-06 18:40:03."
+						},
+						{
+							"id": "198",
+							"uri": "https://localhost:8443/benchmark/weakrand-00/BenchmarkTest00164",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-00\/BenchmarkTest00164 ()(BenchmarkTest00164,BenchmarkTest00164Area,answer)",
+							"method": "POST",
+							"param": "",
+							"attack": "",
+							"evidence": "1880765560",
+							"otherinfo": "1880765560, which evaluates to: 2029-08-07 02:52:40."
+						},
+						{
+							"id": "197",
+							"uri": "https://localhost:8443/benchmark/weakrand-00/BenchmarkTest00164",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-00\/BenchmarkTest00164 ()(BenchmarkTest00164,BenchmarkTest00164Area,answer)",
+							"method": "POST",
+							"param": "Set-Cookie",
+							"attack": "",
+							"evidence": "1880765560",
+							"otherinfo": "1880765560, which evaluates to: 2029-08-07 02:52:40."
+						},
+						{
+							"id": "199",
+							"uri": "https://localhost:8443/benchmark/weakrand-00/BenchmarkTest00235",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/weakrand-00\/BenchmarkTest00235 ()(BenchmarkTest00235,BenchmarkTest00235Area,answer)",
+							"method": "POST",
+							"param": "Set-Cookie",
+							"attack": "",
+							"evidence": "1974211032",
+							"otherinfo": "1974211032, which evaluates to: 2032-07-23 15:57:12."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p>",
+					"otherinfo": "<p>1554576003, which evaluates to: 2019-04-06 18:40:03.</p>",
+					"reference": "<p>https://cwe.mitre.org/data/definitions/200.html</p>",
+					"cweid": "497",
+					"wascid": "13",
+					"sourceid": "1231"
+				},
+				{
+					"pluginid": "10111",
+					"alertRef": "10111",
+					"alert": "Authentication Request Identified",
+					"name": "Authentication Request Identified",
+					"riskcode": "0",
+					"confidence": "1",
+					"riskdesc": "Informational (Low)",
+					"desc": "<p>The given request has been identified as an authentication request. The 'Other Info' field contains a set of key=value lines which identify any relevant fields. If the request is in a context which has an Authentication Method set to \"Auto-Detect\" then this rule will change the authentication to match the request identified.</p>",
+					"instances":[ 
+						{
+							"id": "160",
+							"uri": "https://localhost:8443/benchmark/hash-00/BenchmarkTest00046?BenchmarkTest00046=someSecret&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-00\/BenchmarkTest00046 (BenchmarkTest00046,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=username\nuserValue=ZAP\npasswordParam=password\nreferer=https://localhost:8443/benchmark/hash-00/BenchmarkTest00046.html?BenchmarkTest00046=SafeText"
+						},
+						{
+							"id": "144",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00021?BenchmarkTest00021=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00021 (BenchmarkTest00021,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=username\nuserValue=ZAP\npasswordParam=password\nreferer=https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00021.html?BenchmarkTest00021=SafeText"
+						},
+						{
+							"id": "159",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00367?BenchmarkTest00367=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00367 (BenchmarkTest00367,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=username\nuserValue=ZAP\npasswordParam=password\nreferer=https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00367.html?BenchmarkTest00367=SafeText"
+						},
+						{
+							"id": "166",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00694?BenchmarkTest00694=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00694 (BenchmarkTest00694,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=username\nuserValue=ZAP\npasswordParam=password\nreferer=https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00694.html?BenchmarkTest00694=SafeText"
+						},
+						{
+							"id": "140",
+							"uri": "https://localhost:8443/benchmark/trustbound-00/BenchmarkTest00031?BenchmarkTest00031=my_user_id&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-00\/BenchmarkTest00031 (BenchmarkTest00031,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=username\nuserValue=ZAP\npasswordParam=password\nreferer=https://localhost:8443/benchmark/trustbound-00/BenchmarkTest00031.html?BenchmarkTest00031=SafeText"
+						},
+						{
+							"id": "151",
+							"uri": "https://localhost:8443/benchmark/xpathi-00/BenchmarkTest00442?BenchmarkTest00442=2222&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/xpathi-00\/BenchmarkTest00442 (BenchmarkTest00442,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=username\nuserValue=ZAP\npasswordParam=password\nreferer=https://localhost:8443/benchmark/xpathi-00/BenchmarkTest00442.html?BenchmarkTest00442=SafeText"
+						},
+						{
+							"id": "176",
+							"uri": "https://localhost:8443/benchmark/crypto-00/BenchmarkTest00050",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-00\/BenchmarkTest00050 ()(BenchmarkTest00050,email,password)",
+							"method": "POST",
+							"param": "email",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=email\nuserValue=zaproxy@example.com\npasswordParam=password\nreferer=https://localhost:8443/benchmark/crypto-00/BenchmarkTest00050.html?BenchmarkTest00050=SafeText"
+						},
+						{
+							"id": "155",
+							"uri": "https://localhost:8443/benchmark/hash-00/BenchmarkTest00022",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-00\/BenchmarkTest00022 ()(BenchmarkTest00022,email,password)",
+							"method": "POST",
+							"param": "email",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=email\nuserValue=zaproxy@example.com\npasswordParam=password\nreferer=https://localhost:8443/benchmark/hash-00/BenchmarkTest00022.html?BenchmarkTest00022=SafeText"
+						},
+						{
+							"id": "170",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00630",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00630 ()(BenchmarkTest00630,email,password)",
+							"method": "POST",
+							"param": "email",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=email\nuserValue=zaproxy@example.com\npasswordParam=password\nreferer=https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00630.html?BenchmarkTest00630=SafeText"
+						},
+						{
+							"id": "167",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00695",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00695 ()(BenchmarkTest00695,email,password)",
+							"method": "POST",
+							"param": "email",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=email\nuserValue=zaproxy@example.com\npasswordParam=password\nreferer=https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00695.html?BenchmarkTest00695=SafeText"
+						},
+						{
+							"id": "171",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00348",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00348 ()(BenchmarkTest00348,email,password)",
+							"method": "POST",
+							"param": "email",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=email\nuserValue=zaproxy@example.com\npasswordParam=password\nreferer=https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00348.html?BenchmarkTest00348=SafeText"
+						},
+						{
+							"id": "156",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00403",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00403 ()(BenchmarkTest00403,email,password)",
+							"method": "POST",
+							"param": "email",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "userParam=email\nuserValue=zaproxy@example.com\npasswordParam=password\nreferer=https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00403.html?BenchmarkTest00403=SafeText"
+						}
+					],
+					"count": "12",
+					"systemic": false,
+					"solution": "<p>This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>",
+					"otherinfo": "<p>userParam=username</p><p>userValue=ZAP</p><p>passwordParam=password</p><p>referer=https://localhost:8443/benchmark/hash-00/BenchmarkTest00046.html?BenchmarkTest00046=SafeText</p>",
+					"reference": "<p>https://www.zaproxy.org/docs/desktop/addons/authentication-helper/auth-req-id/</p>",
+					"cweid": "-1",
+					"wascid": "-1",
+					"sourceid": "581"
+				},
+				{
+					"pluginid": "10029",
+					"alertRef": "10029",
+					"alert": "Cookie Poisoning",
+					"name": "Cookie Poisoning",
+					"riskcode": "0",
+					"confidence": "1",
+					"riskdesc": "Informational (Low)",
+					"desc": "<p>This check looks at user-supplied input in query string parameters and POST data to identify where cookie parameters might be controlled. This is called a cookie poisoning attack, and becomes exploitable when an attacker can manipulate the cookie in various ways. In some cases this will not be exploitable, however, allowing URL parameters to set cookie values is generally considered a bug.</p>",
+					"instances":[ 
+						{
+							"id": "173",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00348",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00348 ()(BenchmarkTest00348,email,password)",
+							"method": "POST",
+							"param": "BenchmarkTest00348",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": "An attacker may be able to poison cookie values through POST parameters. To test if this is a more serious issue, you should try resending that request as a GET, with the POST parameter included as a query string parameter. For example: https://nottrusted.com/page?value=maliciousInput.\n\nThis was identified at:\n\nhttps://localhost:8443/benchmark/securecookie-00/BenchmarkTest00348\n\nUser-input was found in the following cookie:\nSomeCookie=email=zaproxy@example.com&password=ZAP&BenchmarkTest00348=whatever; Path=/benchmark/securecookie-00/BenchmarkTest00348; HttpOnly; SameSite=Strict\n\nThe user input was:\nBenchmarkTest00348=whatever"
+						},
+						{
+							"id": "158",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00403",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00403 ()(BenchmarkTest00403,email,password)",
+							"method": "POST",
+							"param": "BenchmarkTest00403",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": "An attacker may be able to poison cookie values through POST parameters. To test if this is a more serious issue, you should try resending that request as a GET, with the POST parameter included as a query string parameter. For example: https://nottrusted.com/page?value=maliciousInput.\n\nThis was identified at:\n\nhttps://localhost:8443/benchmark/securecookie-00/BenchmarkTest00403\n\nUser-input was found in the following cookie:\nSomeCookie=whatever; Path=/benchmark/securecookie-00/BenchmarkTest00403; HttpOnly; SameSite=Strict\n\nThe user input was:\nBenchmarkTest00403=whatever"
+						},
+						{
+							"id": "175",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00404",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00404 ()(BenchmarkTest00404,foo,productID,secure)",
+							"method": "POST",
+							"param": "BenchmarkTest00404",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": "An attacker may be able to poison cookie values through POST parameters. To test if this is a more serious issue, you should try resending that request as a GET, with the POST parameter included as a query string parameter. For example: https://nottrusted.com/page?value=maliciousInput.\n\nThis was identified at:\n\nhttps://localhost:8443/benchmark/securecookie-00/BenchmarkTest00404\n\nUser-input was found in the following cookie:\nSomeCookie=whatever; Path=/benchmark/securecookie-00/BenchmarkTest00404; Secure; HttpOnly; SameSite=Strict\n\nThe user input was:\nBenchmarkTest00404=whatever"
+						},
+						{
+							"id": "177",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00405",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00405 ()(BenchmarkTest00405,foo)",
+							"method": "POST",
+							"param": "BenchmarkTest00405",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": "An attacker may be able to poison cookie values through POST parameters. To test if this is a more serious issue, you should try resending that request as a GET, with the POST parameter included as a query string parameter. For example: https://nottrusted.com/page?value=maliciousInput.\n\nThis was identified at:\n\nhttps://localhost:8443/benchmark/securecookie-00/BenchmarkTest00405\n\nUser-input was found in the following cookie:\nSomeCookie=whatever; Path=/benchmark/securecookie-00/BenchmarkTest00405; Secure; HttpOnly; SameSite=Strict\n\nThe user input was:\nBenchmarkTest00405=whatever"
+						},
+						{
+							"id": "178",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00655",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00655 ()(BenchmarkTest00655,email,password)",
+							"method": "POST",
+							"param": "BenchmarkTest00655",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": "An attacker may be able to poison cookie values through POST parameters. To test if this is a more serious issue, you should try resending that request as a GET, with the POST parameter included as a query string parameter. For example: https://nottrusted.com/page?value=maliciousInput.\n\nThis was identified at:\n\nhttps://localhost:8443/benchmark/securecookie-00/BenchmarkTest00655\n\nUser-input was found in the following cookie:\nSomeCookie=whatever; Path=/benchmark/securecookie-00/BenchmarkTest00655; Secure; HttpOnly; SameSite=Strict\n\nThe user input was:\nBenchmarkTest00655=whatever"
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Do not allow user input to control cookie names and values. If some query string parameters must be set in cookie values, be sure to filter out semicolon's that can serve as name/value pair delimiters.</p>",
+					"otherinfo": "<p>An attacker may be able to poison cookie values through POST parameters. To test if this is a more serious issue, you should try resending that request as a GET, with the POST parameter included as a query string parameter. For example: https://nottrusted.com/page?value=maliciousInput.</p><p></p><p>This was identified at:</p><p></p><p>https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00348</p><p></p><p>User-input was found in the following cookie:</p><p>SomeCookie=email=zaproxy@example.com&password=ZAP&BenchmarkTest00348=whatever; Path=/benchmark/securecookie-00/BenchmarkTest00348; HttpOnly; SameSite=Strict</p><p></p><p>The user input was:</p><p>BenchmarkTest00348=whatever</p>",
+					"reference": "<p>https://en.wikipedia.org/wiki/HTTP_cookie</p><p>https://cwe.mitre.org/data/definitions/565.html</p>",
+					"cweid": "565",
+					"wascid": "20",
+					"sourceid": "673"
+				},
+				{
+					"pluginid": "10024",
+					"alertRef": "10024",
+					"alert": "Information Disclosure - Sensitive Information in URL",
+					"name": "Information Disclosure - Sensitive Information in URL",
+					"riskcode": "0",
+					"confidence": "2",
+					"riskdesc": "Informational (Medium)",
+					"desc": "<p>The request appeared to contain sensitive information leaked in the URL. This can violate PCI and most organizational compliance policies. You can configure the list of strings for this check to add or remove values specific to your environment.</p>",
+					"instances":[ 
+						{
+							"id": "147",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00021?BenchmarkTest00021=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00021 (BenchmarkTest00021,password,username)",
+							"method": "GET",
+							"param": "password",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "The URL contains potentially sensitive information. The following string was found via the pattern: pass\npassword"
+						},
+						{
+							"id": "148",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00021?BenchmarkTest00021=Ms+Bar&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00021 (BenchmarkTest00021,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "username",
+							"otherinfo": "The URL contains potentially sensitive information. The following string was found via the pattern: user\nusername"
+						},
+						{
+							"id": "142",
+							"uri": "https://localhost:8443/benchmark/trustbound-00/BenchmarkTest00031?BenchmarkTest00031=my_user_id&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-00\/BenchmarkTest00031 (BenchmarkTest00031,password,username)",
+							"method": "GET",
+							"param": "password",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "The URL contains potentially sensitive information. The following string was found via the pattern: pass\npassword"
+						},
+						{
+							"id": "143",
+							"uri": "https://localhost:8443/benchmark/trustbound-00/BenchmarkTest00031?BenchmarkTest00031=my_user_id&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-00\/BenchmarkTest00031 (BenchmarkTest00031,password,username)",
+							"method": "GET",
+							"param": "username",
+							"attack": "",
+							"evidence": "username",
+							"otherinfo": "The URL contains potentially sensitive information. The following string was found via the pattern: user\nusername"
+						},
+						{
+							"id": "152",
+							"uri": "https://localhost:8443/benchmark/xpathi-00/BenchmarkTest00442?BenchmarkTest00442=2222&password=ZAP&username=ZAP",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/xpathi-00\/BenchmarkTest00442 (BenchmarkTest00442,password,username)",
+							"method": "GET",
+							"param": "password",
+							"attack": "",
+							"evidence": "password",
+							"otherinfo": "The URL contains potentially sensitive information. The following string was found via the pattern: pass\npassword"
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Do not pass sensitive information in URIs.</p>",
+					"otherinfo": "<p>The URL contains potentially sensitive information. The following string was found via the pattern: pass</p><p>password</p>",
+					"reference": "",
+					"cweid": "598",
+					"wascid": "13",
+					"sourceid": "404"
+				},
+				{
+					"pluginid": "10027",
+					"alertRef": "10027",
+					"alert": "Information Disclosure - Suspicious Comments",
+					"name": "Information Disclosure - Suspicious Comments",
+					"riskcode": "0",
+					"confidence": "2",
+					"riskdesc": "Informational (Medium)",
+					"desc": "<p>The response appears to contain suspicious comments which may help an attacker.</p>",
+					"instances":[ 
+						{
+							"id": "174",
+							"uri": "https://localhost:8443/benchmark/js/testsuiteutils.js",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/js\/testsuiteutils.js",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "// FIXME: This is a hack. Th",
+							"otherinfo": "The following pattern was used: \\bFIXME\\b and was detected in likely comment: \"// FIXME: This is a hack. There has to be a better/more native way in JavaScript\", see evidence field for the suspicious comment/snippet."
+						}
+					],
+					"count": "1",
+					"systemic": false,
+					"solution": "<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>",
+					"otherinfo": "<p>The following pattern was used: \\bFIXME\\b and was detected in likely comment: \"// FIXME: This is a hack. There has to be a better/more native way in JavaScript\", see evidence field for the suspicious comment/snippet.</p>",
+					"reference": "",
+					"cweid": "615",
+					"wascid": "13",
+					"sourceid": "123"
+				},
+				{
+					"pluginid": "10109",
+					"alertRef": "10109",
+					"alert": "Modern Web Application",
+					"name": "Modern Web Application",
+					"riskcode": "0",
+					"confidence": "2",
+					"riskdesc": "Informational (Medium)",
+					"desc": "<p>The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.</p>",
+					"instances":[ 
+						{
+							"id": "34",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00015.html?BenchmarkTest00015=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00015.html (BenchmarkTest00015)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<script src=\"/benchmark/js/jquery.min.js\" type=\"text/javascript\"></script>",
+							"otherinfo": "No links have been found while there are scripts, which is an indication that this is a modern web application."
+						},
+						{
+							"id": "36",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00012.html?BenchmarkTest00012=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00012.html (BenchmarkTest00012)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<script src=\"/benchmark/js/jquery.min.js\" type=\"text/javascript\"></script>",
+							"otherinfo": "No links have been found while there are scripts, which is an indication that this is a modern web application."
+						},
+						{
+							"id": "65",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044.html?BenchmarkTest00044=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044.html (BenchmarkTest00044)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<script src=\"/benchmark/js/jquery.min.js\" type=\"text/javascript\"></script>",
+							"otherinfo": "No links have been found while there are scripts, which is an indication that this is a modern web application."
+						},
+						{
+							"id": "35",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00016.html?BenchmarkTest00016=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00016.html (BenchmarkTest00016)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<script src=\"/benchmark/js/jquery.min.js\" type=\"text/javascript\"></script>",
+							"otherinfo": "No links have been found while there are scripts, which is an indication that this is a modern web application."
+						},
+						{
+							"id": "73",
+							"uri": "https://localhost:8443/benchmark/securecookie-00/BenchmarkTest00170.html?BenchmarkTest00170=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/securecookie-00\/BenchmarkTest00170.html (BenchmarkTest00170)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<script src=\"/benchmark/js/jquery.min.js\" type=\"text/javascript\"></script>",
+							"otherinfo": "No links have been found while there are scripts, which is an indication that this is a modern web application."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>This is an informational alert and so no changes are required.</p>",
+					"otherinfo": "<p>No links have been found while there are scripts, which is an indication that this is a modern web application.</p>",
+					"reference": "",
+					"cweid": "-1",
+					"wascid": "-1",
+					"sourceid": "62"
+				},
+				{
+					"pluginid": "10049",
+					"alertRef": "10049-1",
+					"alert": "Non-Storable Content",
+					"name": "Non-Storable Content",
+					"riskcode": "0",
+					"confidence": "2",
+					"riskdesc": "Informational (Medium)",
+					"desc": "<p>The response contents are not storable by caching components such as proxy servers. If the response does not contain sensitive, personal or user-specific information, it may benefit from being stored and cached, to improve performance.</p>",
+					"instances":[ 
+						{
+							"id": "63",
+							"uri": "https://localhost:8443/benchmark/cmdi-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "no-store",
+							"otherinfo": ""
+						},
+						{
+							"id": "56",
+							"uri": "https://localhost:8443/benchmark/crypto-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "no-store",
+							"otherinfo": ""
+						},
+						{
+							"id": "54",
+							"uri": "https://localhost:8443/benchmark/css/normalize.css",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/css\/normalize.css",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "no-store",
+							"otherinfo": ""
+						},
+						{
+							"id": "69",
+							"uri": "https://localhost:8443/benchmark/ldapi-00/BenchmarkTest00044.html?BenchmarkTest00044=SafeText",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/ldapi-00\/BenchmarkTest00044.html (BenchmarkTest00044)",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "no-store",
+							"otherinfo": ""
+						},
+						{
+							"id": "48",
+							"uri": "https://localhost:8443/benchmark/trustbound-Index.html",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-Index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "no-store",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>The content may be marked as storable by ensuring that the following conditions are satisfied:</p><p>The request method must be understood by the cache and defined as being cacheable (\"GET\", \"HEAD\", and \"POST\" are currently defined as cacheable)</p><p>The response status code must be understood by the cache (one of the 1XX, 2XX, 3XX, 4XX, or 5XX response classes are generally understood)</p><p>The \"no-store\" cache directive must not appear in the request or response header fields</p><p>For caching by \"shared\" caches such as \"proxy\" caches, the \"private\" response directive must not appear in the response</p><p>For caching by \"shared\" caches such as \"proxy\" caches, the \"Authorization\" header field must not appear in the request, unless the response explicitly allows it (using one of the \"must-revalidate\", \"public\", or \"s-maxage\" Cache-Control response directives)</p><p>In addition to the conditions above, at least one of the following conditions must also be satisfied by the response:</p><p>It must contain an \"Expires\" header field</p><p>It must contain a \"max-age\" response directive</p><p>For \"shared\" caches such as \"proxy\" caches, it must contain a \"s-maxage\" response directive</p><p>It must contain a \"Cache Control Extension\" that allows it to be cached</p><p>It must have a status code that is defined as cacheable by default (200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501).</p>",
+					"otherinfo": "",
+					"reference": "<p>https://datatracker.ietf.org/doc/html/rfc7234</p><p>https://datatracker.ietf.org/doc/html/rfc7231</p><p>https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html</p>",
+					"cweid": "524",
+					"wascid": "13",
+					"sourceid": "26"
+				},
+				{
+					"pluginid": "10112",
+					"alertRef": "10112",
+					"alert": "Session Management Response Identified",
+					"name": "Session Management Response Identified",
+					"riskcode": "0",
+					"confidence": "2",
+					"riskdesc": "Informational (Medium)",
+					"desc": "<p>The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to \"Auto-Detect\" then this rule will change the session management to use the tokens identified.</p>",
+					"instances":[ 
+						{
+							"id": "121",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00091",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00091",
+							"method": "GET",
+							"param": "BenchmarkTest00091",
+							"attack": "",
+							"evidence": "BenchmarkTest00091",
+							"otherinfo": "cookie:BenchmarkTest00091"
+						},
+						{
+							"id": "126",
+							"uri": "https://localhost:8443/benchmark/cmdi-00/BenchmarkTest00092",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/cmdi-00\/BenchmarkTest00092",
+							"method": "GET",
+							"param": "BenchmarkTest00092",
+							"attack": "",
+							"evidence": "BenchmarkTest00092",
+							"otherinfo": "cookie:BenchmarkTest00092"
+						},
+						{
+							"id": "125",
+							"uri": "https://localhost:8443/benchmark/crypto-00/BenchmarkTest00053",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-00\/BenchmarkTest00053",
+							"method": "GET",
+							"param": "BenchmarkTest00053",
+							"attack": "",
+							"evidence": "BenchmarkTest00053",
+							"otherinfo": "cookie:BenchmarkTest00053"
+						},
+						{
+							"id": "122",
+							"uri": "https://localhost:8443/benchmark/crypto-00/BenchmarkTest00054",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-00\/BenchmarkTest00054",
+							"method": "GET",
+							"param": "BenchmarkTest00054",
+							"attack": "",
+							"evidence": "BenchmarkTest00054",
+							"otherinfo": "cookie:BenchmarkTest00054"
+						},
+						{
+							"id": "136",
+							"uri": "https://localhost:8443/benchmark/crypto-00/BenchmarkTest00055",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-00\/BenchmarkTest00055",
+							"method": "GET",
+							"param": "BenchmarkTest00055",
+							"attack": "",
+							"evidence": "BenchmarkTest00055",
+							"otherinfo": "cookie:BenchmarkTest00055"
+						},
+						{
+							"id": "137",
+							"uri": "https://localhost:8443/benchmark/crypto-00/BenchmarkTest00056",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/crypto-00\/BenchmarkTest00056",
+							"method": "GET",
+							"param": "BenchmarkTest00056",
+							"attack": "",
+							"evidence": "BenchmarkTest00056",
+							"otherinfo": "cookie:BenchmarkTest00056"
+						},
+						{
+							"id": "114",
+							"uri": "https://localhost:8443/benchmark/hash-00/BenchmarkTest00003",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-00\/BenchmarkTest00003",
+							"method": "GET",
+							"param": "BenchmarkTest00003",
+							"attack": "",
+							"evidence": "BenchmarkTest00003",
+							"otherinfo": "cookie:BenchmarkTest00003"
+						},
+						{
+							"id": "118",
+							"uri": "https://localhost:8443/benchmark/hash-00/BenchmarkTest00069",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-00\/BenchmarkTest00069",
+							"method": "GET",
+							"param": "BenchmarkTest00069",
+							"attack": "",
+							"evidence": "BenchmarkTest00069",
+							"otherinfo": "cookie:BenchmarkTest00069"
+						},
+						{
+							"id": "129",
+							"uri": "https://localhost:8443/benchmark/hash-00/BenchmarkTest00070",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-00\/BenchmarkTest00070",
+							"method": "GET",
+							"param": "BenchmarkTest00070",
+							"attack": "",
+							"evidence": "BenchmarkTest00070",
+							"otherinfo": "cookie:BenchmarkTest00070"
+						},
+						{
+							"id": "131",
+							"uri": "https://localhost:8443/benchmark/hash-00/BenchmarkTest00071",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/hash-00\/BenchmarkTest00071",
+							"method": "GET",
+							"param": "BenchmarkTest00071",
+							"attack": "",
+							"evidence": "BenchmarkTest00071",
+							"otherinfo": "cookie:BenchmarkTest00071"
+						},
+						{
+							"id": "115",
+							"uri": "https://localhost:8443/benchmark/trustbound-00/BenchmarkTest00098",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-00\/BenchmarkTest00098",
+							"method": "GET",
+							"param": "BenchmarkTest00098",
+							"attack": "",
+							"evidence": "BenchmarkTest00098",
+							"otherinfo": "cookie:BenchmarkTest00098"
+						},
+						{
+							"id": "135",
+							"uri": "https://localhost:8443/benchmark/trustbound-00/BenchmarkTest00004",
+							"nodeName": "https:\/\/localhost:8443\/benchmark\/trustbound-00\/BenchmarkTest00004",
+							"method": "POST",
+							"param": "JSESSIONID",
+							"attack": "",
+							"evidence": "JSESSIONID",
+							"otherinfo": "cookie:JSESSIONID"
+						}
+					],
+					"count": "12",
+					"systemic": false,
+					"solution": "<p>This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>",
+					"otherinfo": "<p>cookie:BenchmarkTest00091</p>",
+					"reference": "<p>https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/</p>",
+					"cweid": "-1",
+					"wascid": "-1",
+					"sourceid": "266"
+				}
+			]
+		}
+	],
+	"sequences":[
+	]
+
+}
