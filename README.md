@@ -35,7 +35,7 @@ Jenkins checks out the code, detects which `.java` files were modified in the co
 The pipeline extracts advanced features from the SARIF alerts and source code:
 - **13-Dimensional Vulnerability Vector:** File context is represented as a distribution of vulnerability types.
 - **Weighted Signal Boosting:** Features like `same_type_count` and `weighted_alert_count` (with `SELF_WEIGHT = 3.0`) are used to strongly distinguish true positives.
-- **Random Forest Classifier:** The engineered dataset is passed through a highly optimized Random Forest model. Alerts with a confidence score above the empirically determined optimal threshold (≥ 0.414) proceed to the patching phase.
+- **Random Forest Classifier:** The engineered dataset is passed through a highly optimized Random Forest model. Alerts with a confidence score above the empirically determined optimal threshold (≥ 0.562) proceed to the patching phase.
 
 ### 5. LLM Remediation & Agentic Validation Loop
 For each confirmed vulnerability, the agent enters a self-healing loop (up to 3 iterations):
@@ -62,7 +62,7 @@ graph TD
     E --> F[🧠 ML Triage <br/> Vectorized Random Forest]
     E2 --> F
     
-    F --> G{Confidence > 0.414?}
+    F --> G{Confidence > 0.562?}
     G -- No --> H[🗑️ Discard False Positive]
     G -- Yes --> I[🤖 LLM Remediation <br/> Llama-3.3-70b]
     
@@ -132,7 +132,7 @@ By leveraging context-aware vectorized features (13-dim representations) and wei
 | --------------------- | ------------------------ | -------------------- | ------- | --------- |
 | Static Only           | Baseline                 | Baseline             | ~0.5    | N/A       |
 | Basic Alert Count     | Moderate                 | Improved             | Good    | 0.50      |
-| **Vectorized & Weighted** | **Maximum**          | **Superior**         | **High**| **0.414** |
+| **Vectorized & Weighted** | **Maximum**          | **Superior**         | **High**| **0.562** |
 
 *(Detailed metrics and precision-recall graphs are generated in the `BenchmarkJava/visualizations` directory.)*
 
